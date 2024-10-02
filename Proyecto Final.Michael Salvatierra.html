@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Fútbol</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #2c2929;
+            color: #e0e0e0;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #1e970d;
+        }
+
+        .botonRedes a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #e0e0e0;
+            background-color: transparent;
+            display: inline-block;
+        }
+
+        .botonRedes a:hover {
+            transform: scale(1.1); 
+            color: #000;
+        }
+
+        .enlaceSecciones a {
+            padding: 10px;
+            border-radius: 15px;
+            margin: 0 10px;
+            text-decoration: none;
+            color: #e0e0e0;
+            background-color: transparent;
+        }
+
+        .enlaceSecciones a:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        
+        .icono {
+            font-size: 24px;
+            color: #e0e0e0;
+            margin: 0 10px;
+        }
+
+        .icono:hover {
+            color: #ff5722;
+        }
+
+        
+        .ruleta {
+            width: 100%;
+            height: 720px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .slide {
+            width: 400%;
+            height: 100%;
+            display: flex;
+            animation: slide 12s infinite;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(0%); }
+            25% { transform: translateX(-25%); }
+            50% { transform: translateX(-50%); }
+            75% { transform: translateX(-75%); }
+            100% { transform: translateX(0%); }
+        }
+
+        
+        h1 {
+            padding: 30px;
+            background-color: #000;
+            text-align: center;
+            font-size: 48px;
+            color: #ffffff;
+            margin: 20px 0;
+        }
+
+        
+        section {
+            margin: 0px auto; 
+            width: 80%;
+            padding: 40px;
+            text-align: center;
+            border: 2px solid #00ff00; 
+            box-shadow: 0px 0px 10px 2px #00ff00;
+            margin-bottom: 50px;
+        }
+
+        section button {
+            padding: 10px 20px;
+            background-color: transparent;
+            border: 2px solid #00ff00;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 15px;
+        }
+
+        section button:hover {
+            background-color: rgb(30, 129, 21);
+            color: #000;
+        }
+
+        .botonDownload{
+            padding: 10px 20px;
+            background-color: transparent;
+            border: 2px solid #00ff00;
+            color: #fff;
+            cursor: pointer;
+            text-decoration-line: none;
+            border-radius: 15px;
+        }
+
+        .botonDownload:hover{
+            background-color: rgb(30, 129, 21);
+            color: #000;
+        }
+
+       
+        footer {
+            padding: 20px;
+            text-align: center;
+            background-color: #333;
+            color: #e0e0e0;
+        }
+
+        
+        .jugador {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .jugador img {
+            width: 150px;
+            height: auto;
+            margin-right: 20px;
+            border-radius: 10px;
+        }
+
+        .video{
+            width: 900px;
+            height: 400px;
+        }
+
+        .jugador p {
+            font-size: 18px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        iframe{
+            height: 600px;
+            width: 400px;
+        }
+
+    </style>
+</head>
+<body>
+
+    
+    <header>
+       
+        <nav class="enlaceSecciones">
+            <a href="#seccion1">Historia</a>
+            <a href="#seccion2">Mejores jugadores</a>
+            <a href="#seccion3">Calculadora</a>
+            <a href="#seccion4">Google Sheets</a>
+        </nav>
+  
+        <nav class="botonRedes">
+            <a href="https://whatsapp.com/channel/0029VZzjvDWIt5s5EgORWP0q " target="_blank" class="icono">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.instagram.com/90min_es/p/CmZFLh3rC3b/&ved=2ahUKEwi5jdrrtO-IAxW4FLkGHVkHCfIQFnoECBQQAQ&usg=AOvVaw2VVqbxGEn-45UNVlK1hFQl" target="_blank" class="icono">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.tiktok.com/discover/100-mejores-jugadores-de-la-historia%3Flang%3Des&ved=2ahUKEwjao82qte-IAxX0G7kGHa-bLYUQFnoECBYQAQ&usg=AOvVaw2g-jMzxLJOX6C6T94V6yls" target="_blank" class="icono">
+                <i class="fab fa-tiktok"></i>
+            </a>
+        </nav>
+    </header>
+
+
+    <div class="ruleta">
+        <div class="slide">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWLrOEprDUbjVC0LR3YTpPCsyGIAd4Bt--_A&s" alt="foto1">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdVolhFG6RzVI0ckJW946Vfs_xNkOaY1FE8A&s" alt="foto2">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJ_l3QAY-KHq2wwea-jFo-EGltS4kt9ALFaA&s" alt="foto3">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrFFgBUZUiE89_CJqsXj0PzXZSrtWYQJ7hxQ&s" alt="foto4">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnfnDgQV_LT9m91KYQrEyPNogtLVPz5t4V9Q&s" alt="foto5">
+        </div>
+    </div>
+
+
+    <h1>Futbol en el Tiempo</h1>
+
+  
+    <section id="seccion1">
+        <h2>Historia del fútbol</h2>
+        <p>Descubre los orígenes y evolución del fútbol a lo largo de los años.</p><br>
+        <p>El fútbol surgió en Inglaterra a mediados del siglo XIX, cuando varios juegos locales con pelota se unificaron en un solo deporte. En 1863, se fundó la Asociación de Fútbol (FA), que estableció las primeras reglas formales del juego. Rápidamente se expandió por Europa y América del Sur, y en 1904 se creó la FIFA para organizar competencias internacionales. El fútbol creció hasta convertirse en el deporte más popular del mundo, con torneos icónicos como la Copa del Mundo, celebrada por primera vez en 1930. Hoy, millones de personas lo siguen y juegan en todo el planeta.</p>
+        <iframe class="video" src="https://es.wikipedia.org/wiki/Historia_del_f%C3%BAtbol" allowfullscreen></iframe><br>
+        <button onclick="window.scrollTo(0, 0);">Ir al Inicio</button>
+    </section>
+
+    <section id="seccion2">
+        <h2>Los mejores jugadores de fútbol actualmente</h2>
+
+        <iframe class="video" src="https://www.youtube.com/embed/utRQF3kS_Uo?si=bZy7aBJOaunJMK5C" allowfullscreen></iframe>
+
+        <p>Conoce más sobre los jugadores que mejor están jugando esta temporada.</p>
+
+        <div class="jugador">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmKjBnfDVWNdJDrorF7IfnxSWVZEzXf0-upA&s" alt="Lamine">
+            <p>1. Lamine Yamal: La joya del fútbol mundial. El delantero del Barcelona apenas tiene 17 años (que acaba de cumplir) y ya tiene en su haber una Eurocopa, ni más ni menos. Fue clave para que la Roja pueda ganar su cuarta Euro, con goles claves como el que le anotó a Francia, en las semifinales.</p>
+        </div>
+
+        <div class="jugador">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFykGPEI7UKtuGt5PnaIjPdJuz23f5xXZVvw&s" alt="Erling">
+            <p>2. Erling Haaland: Lo que ha hecho El Androide hasta ahora es para rendirle un minuto de aplausos. Parece que fue ayer cuando captó la atención con su paso goleador en el Borussia Dortmund, además de aquel partido en el que su selección aplastó 12-0 a Honduras en el Mundial sub-20 con nueve del delantero.</p>
+        </div>
+
+        <div class="jugador">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd2aZtBPitumL4Vrqx2uI5tsGzX-epFSYw2w&s" alt="Lewandoski">
+            <p>3. Robert Lewandowski: Lewandowski está en el ocaso de su carrera, pero sigue siendo uno de los goleadores más prolíficos de Europa. 25 goles y 8 asistencias en 48 partidos para el polaco. Aunque el Barcelona fue un fracaso la temporada pasada, la cuota de goles de Robert se mantuvo.</p>
+        </div>
+
+        <div class="jugador">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0bveQnZq61_spobXIendJ3DPTyG9WuANb3g&s" alt="Federico">
+            <p>4. Federico Valverde: El Real Madrid arrancó la temporada 2024-25 de buena manera, con siete triunfos en igual cantidad de jornadas. Federico Valverde ha sido el hombre clave de la Casa Blanca, con actuaciones estelares, como contra el Getafe (doblete) o contra el Almería (otro doblete).</p>
+        </div>
+
+        <button onclick="window.scrollTo(0, 0);">Ir al Inicio</button>
+    </section>
+
+    <section id="seccion3">
+        <h2>Calculadora</h2>
+        <iframe class="frameCalculadora" src="Calculadora Michael.html" allowfullscreen></iframe>
+        <p>Una calculadora hecha por mi para mejorar tu experiencia.</p>
+        <a class="botonDownload" href="https://drive.google.com/file/d/1PRs9q_AI2E9oArWjWZ_6fbE8BsvS8Wjv/view?usp=sharing" download="CalculadoraJhosmar.pdf">Descargar calculadora</a>
+        <button onclick="window.scrollTo(0, 0);">Ir al Inicio</button>
+    </section>
+
+    <section id="seccion4">
+        <h2>Google Sheets</h2>
+        <iframe src="https://docs.google.com/spreadsheets/d/1090N9zfFKwEgdTJChNwF_UcZo29MGFMvD8K-tILIOig/edit?usp=sharing" allowfullscreen></iframe>
+        <p>Informacion de partidos en las proximas semanas</p>
+        <button onclick="window.scrollTo(0, 0);">Ir al Inicio</button>
+    </section>
+
+    <!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="botonRedes">
+        <a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.facebook.com/story.php/%3Fstory_fbid%3D2489015984590639%26id%3D1223394827819434&ved=2ahUKEwjah4WWtO-IAxVbJrkGHSr9LvEQFnoECBcQAQ&usg=AOvVaw0BoA3BWsgfUUKGZXGCt99R" target="_blank" class="icono facebook">
+            <i class="fab fa-facebook"></i>
+        </a>
+        <a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.youtube.com/watch%3Fv%3Diwk4O86jSYs&ved=2ahUKEwiQ8vittO-IAxWQKrkGHbUeCJsQtwJ6BAgPEAI&usg=AOvVaw0-TTPFLsKHhohtAY9XFprW" target="_blank" class="icono youtube">
+            <i class="fab fa-youtube"></i>
+        </a>
+        <a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://twitter.com/Mercado_Ingles/status/1702324383216509277%3Flang%3Des&ved=2ahUKEwj__L29tO-IAxXdFbkGHc7TIYsQFnoECBcQAQ&usg=AOvVaw0hhwcsa8Ll5D6ArC26KU4a" target="_blank" class="icono twitter">
+            <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.tiktok.com/%40oierbeast02/video/7303650424450518305%3Flang%3Des&ved=2ahUKEwjqubbItO-IAxUfO7kGHXoZNsAQtwJ6BAgLEAI&usg=AOvVaw1xslR02yWrDVZLhXJ8O0Cq" target="_blank" class="icono tiktok">
+            <i class="fab fa-tiktok"></i>
+        </a>
+        <a href="https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://t.me/s/memoriasdelfutbol%3Fbefore%3D287&ved=2ahUKEwjB18HYtO-IAxWzLrkGHSeJKT8QFnoECBYQAQ&usg=AOvVaw1VCUMAXQ2inVXwtsLUgS5F" target="_blank" class="icono telegram">
+            <i class="fab fa-telegram"></i>
+        </a>
+        <p>&copy; 2024 Todos los derechos reservados para Michael Salvatierra</p>
+    </div>
+</footer>
+
+<style>
+    .botonRedes {
+        margin-top: 10px; 
+    }
+
+    .botonRedes a {
+        margin: 0 10px;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 24px;
+        transition: transform 0.3s; 
+    }
+
+    .botonRedes a.facebook {
+        color: #3b5998; 
+    }
+
+    .botonRedes a.youtube {
+        color: #FF0000; 
+    }
+
+    .botonRedes a.twitter {
+        color: #1DA1F2; 
+    }
+
+    .botonRedes a.tiktok {
+        color: #69C9F0; 
+    }
+
+    .botonRedes a.telegram {
+        color: #0088cc; 
+    }
+
+    .botonRedes a:hover {
+        transform: translateY(-5px); 
+    }
+</style>
+
+
+</body>
+</html>
