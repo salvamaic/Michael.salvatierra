@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Michael</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsyoOq81ANPwymK8wdVgS0kVJgyBEx-3DsDQ&s);
+        }
+        .calculator {
+            width: 100%;
+            max-width: 280px;
+            border: 1px solid #333;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        #display {
+            width: 100%;
+            height: 50px;
+            font-size: 24px;
+            text-align: right;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: #a8e478;
+            box-sizing: border-box;
+        }
+        .button {
+            width: calc(25% - 6px);
+            aspect-ratio: 1 / 1;
+            font-size: 18px;
+            margin: 3px;
+            cursor: pointer;
+            background-image: url("ImagesHTML/f1.jpeg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #33e40b;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #3a3a3a;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .operator {
+            background-color: #06e5f5;
+            color: #796d6d;
+        }
+        .operator:hover {
+            background-color: #f0b030;
+        }
+        .function {
+            background-color: #444;
+        }
+        .function:hover {
+            background-color: #555;
+        }
+        .wide-button {
+            width: calc(50% - 6px);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <input type="text" id="display" disabled>
+    <div class="row">
+        <button class="button function" onclick="clearDisplay()">C</button>
+        <button class="button operator" onclick="appendToDisplay('/')">/</button>
+        <button class="button operator" onclick="appendToDisplay('*')">*</button>
+        <button class="button function" onclick="deleteLast()">←</button>
+    </div>
+    <div class="row">
+        <button class="button" onclick="appendToDisplay('7')">7</button>
+        <button class="button" onclick="appendToDisplay('8')">8</button>
+        <button class="button" onclick="appendToDisplay('9')">9</button>
+        <button class="button operator" onclick="appendToDisplay('-')">-</button>
+    </div>
+    <div class="row">
+        <button class="button" onclick="appendToDisplay('4')">4</button>
+        <button class="button" onclick="appendToDisplay('5')">5</button>
+        <button class="button" onclick="appendToDisplay('6')">6</button>
+        <button class="button operator" onclick="appendToDisplay('+')">+</button>
+    </div>
+    <div class="row">
+        <button class="button" onclick="appendToDisplay('1')">1</button>
+        <button class="button" onclick="appendToDisplay('2')">2</button>
+        <button class="button" onclick="appendToDisplay('3')">3</button>
+        <button class="button operator" onclick="calculateResult()">=</button>
+    </div>
+    <div class="row">
+        <button class="button" onclick="appendToDisplay('0')">0</button>
+        <button class="button" onclick="appendToDisplay('.')">.</button>
+        <button class="button function" onclick="calculateSquareRoot()">√</button>
+        <button class="button function" onclick="calculateSquare()">x²</button>
+    </div>
+    <div class="row">
+        <button class="button wide-button function" onclick="isPrime()">Primo</button>
+        <button class="button wide-button function" onclick="isEven()">Par/Impar</button>
+    </div>
+</div>
+
+<script>
+    function appendToDisplay(value) {
+        document.getElementById('display').value += value;
+    }
+
+    function clearDisplay() {
+        document.getElementById('display').value = '';
+    }
+
+    function deleteLast() {
+        var display = document.getElementById('display');
+        display.value = display.value.slice(0, -1);
+    }
+
+    function calculateResult() {
+        var display = document.getElementById('display');
+        try {
+            display.value = eval(display.value);
+        } catch (error) {
+            display.value = 'Error';
+        }
+    }
+
+    function calculateSquareRoot() {
+        var display = document.getElementById('display');
+        var value = parseFloat(display.value);
+        if (isNaN(value) || value < 0) {
+            display.value = 'Error';
+        } else {
+            display.value = Math.sqrt(value).toFixed(8);
+        }
+    }
+
+    function calculateSquare() {
+        var display = document.getElementById('display');
+        var value = parseFloat(display.value);
+        if (isNaN(value)) {
+            display.value = 'Error';
+        } else {
+            display.value = (value * value).toFixed(8);
+        }
+    }
+
+    function isEven() {
+        var display = document.getElementById('display');
+        var number = parseInt(display.value);
+        if (isNaN(number)) {
+            display.value = "Error: No es un número";
+        } else {
+            display.value = number + (number % 2 === 0 ? " es par" : " es impar");
+        }
+    }
+
+    function isPrime() {
+        var display = document.getElementById('display');
+        var number = parseInt(display.value);
+        if (isNaN(number) || number < 1) {
+            display.value = "Error: No es un número válido";
+            return;
+        }
+        if (number < 2) {
+            display.value = number + " no es primo";
+            return;
+        }
+        for (var i = 2; i <= Math.sqrt(number); i++) {
+            if (number % i === 0) {
+                display.value = number + " no es primo";
+                return;
+            }
+        }
+        display.value = number + " es primo";
+    }
+</script>
+
+</body>
+</html>
