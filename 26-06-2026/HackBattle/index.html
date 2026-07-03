@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HACK BATTLE - Simulador de batallas entre hackers. Juego competitivo de estrategia por turnos.">
+    <title>HACK BATTLE — Simulador de Hackeo Competitivo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+
+    <!-- Particle Background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="game-logo">
+            <h1>HACK BATTLE</h1>
+            <div class="subtitle">Simulador de Hackeo Competitivo</div>
+        </div>
+        <div class="loading-bar">
+            <div class="loading-fill"></div>
+        </div>
+        <div class="loading-text">Inicializando sistema...</div>
+    </div>
+
+    <!-- Contenedor Principal -->
+    <div class="game-container" style="flex-direction: column;">
+
+        <!-- Barra de Estado del Rol de Usuario -->
+        <div id="role-indicator-bar" class="role-indicator-bar glass" style="display: none;">
+            <div class="role-info-container">
+                <span>👤 Usuario: <strong id="indicator-username">invitado</strong></span>
+                <span style="color: var(--text-muted);">|</span>
+                <span>🔑 Rol BD: <strong id="indicator-role" style="color: var(--gold);">db_guest</strong></span>
+                <span style="color: var(--text-muted);">|</span>
+                <button class="btn btn-cyan" onclick="abrirCertificado()" style="padding: 2px 10px; font-size: 0.68rem; height: auto;">📜 CERTIFICACIÓN BD</button>
+            </div>
+            <div class="db-connection-status">
+                <div class="db-connection-dot"></div>
+                <span>SQL Server Status: CONNECTED</span>
+            </div>
+        </div>
+
+        <!-- ===== LOGIN ===== -->
+        <div id="screen-login" class="screen active">
+            <div class="game-logo">
+                <h1 class="glitch-text" data-text="HACK BATTLE">HACK BATTLE</h1>
+                <div class="subtitle">Simulador de Hackeo Competitivo</div>
+                <div class="version">v3.0 — GAMEZONE SQL Server Integrator</div>
+            </div>
+
+            <div class="login-box glass">
+                <div class="terminal-prompt">
+                    <span>sistema</span>:~$ iniciar_sesion --rol-seguro
+                </div>
+                <br>
+
+                <div class="input-group">
+                    <label>👤 Usuario</label>
+                    <input type="text" id="login-usuario" class="input-field" placeholder="Nombre de hacker..." autocomplete="off">
+                </div>
+
+                <div class="input-group">
+                    <label>🔑 Contraseña</label>
+                    <input type="password" id="login-password" class="input-field" placeholder="Tu contraseña...">
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 28px;">
+                    <button class="btn btn-primary btn-full btn-lg" onclick="intentarLogin()">
+                        ⚡ CONECTAR
+                    </button>
+                    <button class="btn btn-cyan btn-full btn-lg" onclick="mostrarPantalla('registro')">
+                        📝 REGISTRO
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== REGISTRO NUEVO JUGADOR DEDICADO ===== -->
+        <div id="screen-registro" class="screen">
+            <div class="game-logo">
+                <h1 class="glitch-text" data-text="NUEVO REGISTRO">NUEVO REGISTRO</h1>
+                <div class="subtitle">Crear Identidad de Hacker en el Servidor</div>
+            </div>
+
+            <div class="login-box glass" style="max-width: 460px; margin: 0 auto;">
+                <div class="terminal-prompt">
+                    <span>sistema</span>:~$ crear_cuenta --rol=db_player
+                </div>
+                <br>
+
+                <div class="input-group">
+                    <label>👤 Nombre de Hacker (Usuario)</label>
+                    <input type="text" id="reg-usuario" class="input-field" placeholder="Ej: ShadowX..." autocomplete="off">
+                </div>
+
+                <div class="input-group">
+                    <label>💼 Nombre Completo</label>
+                    <input type="text" id="reg-nombre" class="input-field" placeholder="Tu nombre real..." autocomplete="off">
+                </div>
+
+                <div class="input-group">
+                    <label>📧 Correo Electrónico</label>
+                    <input type="email" id="reg-correo" class="input-field" placeholder="hacker@hackmail.com..." autocomplete="off">
+                </div>
+
+                <div class="input-group">
+                    <label>🔑 Contraseña</label>
+                    <input type="password" id="reg-password" class="input-field" placeholder="Elige una clave fuerte...">
+                </div>
+
+                <div class="input-group">
+                    <label>🔄 Confirmar Contraseña</label>
+                    <input type="password" id="reg-confirm" class="input-field" placeholder="Confirma tu clave...">
+                </div>
+
+                <div style="display: flex; gap: 8px; align-items: center; margin-top: 16px; margin-bottom: 20px;">
+                    <input type="checkbox" id="reg-terminos" style="cursor: pointer; accent-color: var(--accent);">
+                    <label for="reg-terminos" style="font-size: 0.72rem; color: var(--text-soft); cursor: pointer; user-select: none;">
+                        Acepto los términos y declaro usar estas herramientas de forma ética 📜
+                    </label>
+                </div>
+
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-primary btn-full btn-lg" onclick="ejecutarRegistroCompleto()">
+                        ⚡ CONFIRMAR REGISTRO
+                    </button>
+                    <button class="btn back-btn btn-full btn-lg" onclick="mostrarPantalla('login')">
+                        ← CANCELAR
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== MENÚ ===== -->
+        <div id="screen-menu" class="screen">
+            <div class="game-logo">
+                <h1 class="glitch-text" data-text="HACK BATTLE">HACK BATTLE</h1>
+                <div class="subtitle">Panel de Control</div>
+            </div>
+
+            <div class="menu-grid">
+                <div class="menu-card glass" id="menu-btn-batalla" onclick="iniciarBatalla()">
+                    <span class="card-icon">⚔️</span>
+                    <div class="card-title">NUEVA PARTIDA</div>
+                    <div class="card-desc">Enfréntate a un hacker rival en una batalla estratégica por turnos.</div>
+                    <div class="battle-config" onclick="event.stopPropagation()">
+                        <div class="config-row">
+                            <label class="config-label">🎯 Dificultad</label>
+                            <select id="select-dificultad" class="config-select" onchange="GameState.dificultad = this.value">
+                                <option value="facil">🟢 Novato</option>
+                                <option value="normal" selected>🟡 Hacker</option>
+                                <option value="dificil">🔴 Elite</option>
+                            </select>
+                        </div>
+                        <div class="config-row">
+                            <label class="config-label">⚡ Modo</label>
+                            <select id="select-modo" class="config-select" onchange="GameState.modoRapido = this.value === 'rapido'">
+                                <option value="normal">Normal (100 HP)</option>
+                                <option value="rapido">Rápido (60 HP)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="menu-card glass" id="menu-btn-espectador" onclick="iniciarEspectador()">
+                    <span class="card-icon">👁️‍🗨️</span>
+                    <div class="card-title">MODO ESPECTADOR</div>
+                    <div class="card-desc">Observa un enfrentamiento automatizado de inteligencia artificial en red.</div>
+                </div>
+
+                <div class="menu-card glass" id="menu-btn-admin" onclick="mostrarPantalla('admin-db')">
+                    <span class="card-icon">🎛️</span>
+                    <div class="card-title">ADMINISTRAR BASE DE DATOS</div>
+                    <div class="card-desc">Consola SQL interactiva, auditoría, esquema y configuración de triggers.</div>
+                </div>
+
+                <div class="menu-card glass" id="menu-btn-ranking" onclick="mostrarPantalla('ranking')">
+                    <span class="card-icon">🏆</span>
+                    <div class="card-title">RANKING GLOBAL</div>
+                    <div class="card-desc">Tabla de clasificación con los mejores hackers del sistema.</div>
+                </div>
+
+                <div class="menu-card glass" id="menu-btn-perfil" onclick="mostrarPantalla('perfil')">
+                    <span class="card-icon">👤</span>
+                    <div class="card-title">MI PERFIL</div>
+                    <div class="card-desc">Tus estadísticas, nivel, experiencia y herramientas.</div>
+                </div>
+
+                <div class="menu-card glass" id="menu-btn-historial" onclick="mostrarPantalla('historial')">
+                    <span class="card-icon">📋</span>
+                    <div class="card-title">HISTORIAL</div>
+                    <div class="card-desc">Registro completo de todas tus partidas anteriores.</div>
+                </div>
+
+                <div class="menu-card glass" id="menu-btn-torneos" onclick="mostrarPantalla('torneos')">
+                    <span class="card-icon">🎯</span>
+                    <div class="card-title">TORNEOS</div>
+                    <div class="card-desc">Torneos activos y finalizados del sistema GAMEZONE.</div>
+                </div>
+
+                <div class="menu-card glass" id="menu-btn-certificado" onclick="abrirCertificado()">
+                    <span class="card-icon">📜</span>
+                    <div class="card-title">CERTIFICADO BD</div>
+                    <div class="card-desc">Verifica la encriptación TDE y la seguridad oficial del servidor.</div>
+                </div>
+
+                <div class="menu-card glass" id="menu-btn-desconectar" onclick="cerrarSesion()">
+                    <span class="card-icon">🚪</span>
+                    <div class="card-title">DESCONECTAR</div>
+                    <div class="card-desc">Cierra tu sesión y vuelve al inicio.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== BATALLA ===== -->
+        <div id="screen-batalla" class="screen">
+            <div class="turn-info glass">
+                <div class="turn-number" id="turn-number">TURNO 1</div>
+                <div class="turn-status" id="turn-status">>> Tu turno - Elige herramienta</div>
+                <button class="btn btn-danger" onclick="mostrarPantalla('menu')" style="padding: 6px 14px; font-size: 0.72rem;">✕ RENDIRSE</button>
+            </div>
+
+            <div class="battle-container">
+                <div class="server-panel player-panel glass">
+                    <div class="panel-header">
+                        <span class="panel-icon">💻</span>
+                        <div>
+                            <div class="panel-title" id="player-name">Jugador</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">TU SERVIDOR</div>
+                        </div>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="bar-label"><span>🔒 Seguridad</span><span id="player-security">100</span></div>
+                        <div class="bar-track"><div class="bar-fill bar-health" id="player-security-bar" style="width: 100%"></div></div>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="bar-label"><span>⚡ Energía</span><span id="player-energy">100</span></div>
+                        <div class="bar-track"><div class="bar-fill bar-energy" id="player-energy-bar" style="width: 100%"></div></div>
+                    </div>
+                    <div class="active-effects">
+                        <div class="effects-title">Efectos Activos</div>
+                        <div id="player-effects"></div>
+                    </div>
+                </div>
+
+                <div class="vs-separator"><div class="vs-text">VS</div></div>
+
+                <div class="server-panel enemy-panel glass">
+                    <div class="panel-header">
+                        <span class="panel-icon">🖥️</span>
+                        <div>
+                            <div class="panel-title" id="enemy-name">Rival</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">SERVIDOR RIVAL</div>
+                        </div>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="bar-label"><span>🔒 Seguridad</span><span id="enemy-security">100</span></div>
+                        <div class="bar-track"><div class="bar-fill bar-enemy" id="enemy-security-bar" style="width: 100%"></div></div>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="bar-label"><span>⚡ Energía</span><span id="enemy-energy">100</span></div>
+                        <div class="bar-track"><div class="bar-fill bar-energy" id="enemy-energy-bar" style="width: 100%"></div></div>
+                    </div>
+                    <div class="active-effects">
+                        <div class="effects-title">Efectos Activos</div>
+                        <div id="enemy-effects"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tools-section glass">
+                <div class="section-title">🔧 Arsenal de Herramientas</div>
+                <div class="tools-grid" id="tools-grid"></div>
+            </div>
+
+            <div class="battle-log glass">
+                <div class="log-title">📟 Registro del Sistema</div>
+                <div id="battle-log-entries"></div>
+            </div>
+        </div>
+
+        <!-- ===== RANKING ===== -->
+        <div id="screen-ranking" class="screen">
+            <div class="screen-header">
+                <h2>🏆 Ranking Global</h2>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-cyan" onclick="exportarTablaExcel('ranking-body', 'ranking_global')">📥 Exportar a Excel</button>
+                    <button class="btn back-btn" onclick="mostrarPantalla('menu')">← Volver</button>
+                </div>
+            </div>
+            <div class="data-table-container glass">
+
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Pos.</th><th>Nombre</th><th>Nivel</th><th>Victorias</th><th>Derrotas</th><th>Partidas</th><th>Winrate</th></tr>
+                    </thead>
+                    <tbody id="ranking-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== PERFIL ===== -->
+        <div id="screen-perfil" class="screen">
+            <div class="screen-header">
+                <h2>👤 Mi Perfil</h2>
+                <button class="btn back-btn" onclick="mostrarPantalla('menu')">← Volver</button>
+            </div>
+            <div class="profile-grid">
+                <div class="profile-card glass">
+                    <div class="profile-avatar">
+                        <span class="avatar-icon">🧑‍💻</span>
+                        <div class="player-name" id="perfil-nombre">Jugador</div>
+                        <div class="player-level" id="perfil-nivel">Nivel 1</div>
+                    </div>
+                    <div class="stat-bar" style="margin-top: 15px;">
+                        <div class="bar-label"><span>⭐ Progreso</span><span id="perfil-xp-next">0 / 250 XP</span></div>
+                        <div class="bar-track">
+                            <div class="bar-fill" id="perfil-xp-bar" style="width: 0%; background: linear-gradient(90deg, var(--gold), var(--teal)); box-shadow: 0 0 10px var(--gold-glow);"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-card glass">
+                    <h3>📊 Estadísticas</h3>
+                    <div class="stat-item"><span class="stat-label">Victorias</span><span class="stat-value" id="perfil-victorias" style="color: var(--green);">0</span></div>
+                    <div class="stat-item"><span class="stat-label">Derrotas</span><span class="stat-value" id="perfil-derrotas" style="color: var(--red);">0</span></div>
+                    <div class="stat-item"><span class="stat-label">Partidas Jugadas</span><span class="stat-value" id="perfil-partidas">0</span></div>
+                    <div class="stat-item"><span class="stat-label">Winrate</span><span class="stat-value" id="perfil-winrate" style="color: var(--gold);">0%</span></div>
+                    <div class="stat-item"><span class="stat-label">Fecha de Registro</span><span class="stat-value" id="perfil-fecha" style="color: var(--text-muted);">-</span></div>
+                </div>
+                <div class="profile-card full-width glass">
+                    <h3>🔧 Herramientas</h3>
+
+                    <div id="perfil-tools"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== HISTORIAL ===== -->
+        <div id="screen-historial" class="screen">
+            <div class="screen-header">
+                <h2>📋 Historial de Partidas</h2>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-cyan" onclick="exportarTablaExcel('historial-body', 'historial_partidas')">📥 Exportar a Excel</button>
+                    <button class="btn back-btn" onclick="mostrarPantalla('menu')">← Volver</button>
+                </div>
+            </div>
+            <div class="data-table-container glass">
+
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Fecha</th><th>Rival</th><th>Resultado</th><th>Turnos</th><th>Duración</th></tr>
+                    </thead>
+                    <tbody id="historial-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== TORNEOS ===== -->
+        <div id="screen-torneos" class="screen">
+            <div class="screen-header">
+                <h2>🎯 Torneos GAMEZONE</h2>
+                <button class="btn back-btn" onclick="mostrarPantalla('menu')">← Volver</button>
+            </div>
+            <div class="data-table-container glass">
+
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Torneo</th><th>Estado</th><th>Participantes</th><th>Ganador</th><th>Premio</th><th>Fecha</th></tr>
+                    </thead>
+                    <tbody id="torneos-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== ADMIN DASHBOARD ===== -->
+        <div id="screen-admin-db" class="screen">
+            <div class="screen-header">
+                <h2>🎛️ Panel de Administración de Base de Datos</h2>
+                <button class="btn back-btn" onclick="mostrarPantalla('menu')">← Volver</button>
+            </div>
+            
+            <div class="admin-tabs">
+                <button class="admin-tab-btn active" id="btn-tab-sql" onclick="cambiarAdminTab('sql')">💻 Consola SQL</button>
+                <button class="admin-tab-btn" id="btn-tab-edit-tools" onclick="cambiarAdminTab('edit-tools')">🛠️ sp_ActualizarHerramienta</button>
+                <button class="admin-tab-btn" id="btn-tab-audit" onclick="cambiarAdminTab('audit')">📜 Auditoría de Partidas</button>
+                <button class="admin-tab-btn" id="btn-tab-schema" onclick="cambiarAdminTab('schema')">🗂️ Esquema Relacional</button>
+                <button class="admin-tab-btn" id="btn-tab-reports" onclick="cambiarAdminTab('reports')">📊 Reportes por Jugador</button>
+            </div>
+
+            <!-- Pestaña 1: Consola SQL -->
+            <div id="admin-tab-sql" class="admin-tab-content">
+                <div class="sql-terminal-box">
+                    <div class="terminal-header">
+                        <span>Microsoft SQL Server Management Studio — HackBattleDB</span>
+                        <span>admin_hb [db_owner]</span>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="sql-input-row">
+                            <span class="sql-prompt">HackBattleDB&gt;</span>
+                            <input type="text" id="sql-console-input" class="sql-input" placeholder="Escribe tu consulta SQL aquí... (Ej: SELECT * FROM Usuario;)" autocomplete="off">
+                            <button class="btn btn-primary" onclick="ejecutarConsultaSQL()" style="padding: 8px 16px; font-size: 0.75rem;">EXECUTE</button>
+                        </div>
+                        <div class="sql-templates-container">
+                            <button class="sql-template-btn" onclick="setSQLTemplate('SELECT * FROM Usuario;')">SELECT Usuarios</button>
+                            <button class="sql-template-btn" onclick="setSQLTemplate('SELECT * FROM Jugador;')">SELECT Jugadores</button>
+                            <button class="sql-template-btn" onclick="setSQLTemplate('SELECT * FROM Herramienta;')">SELECT Herramientas</button>
+                            <button class="sql-template-btn" onclick="setSQLTemplate('SELECT * FROM Partida;')">SELECT Partidas</button>
+                            <button class="sql-template-btn" onclick="setSQLTemplate('SELECT * FROM AuditoriaPartida;')">SELECT Auditoria</button>
+                            <button class="sql-template-btn" onclick="setSQLTemplate('UPDATE Herramienta SET daño = 60 WHERE nombre = \'Virus\';')">UPDATE Virus (+Daño)</button>
+                            <button class="sql-template-btn" onclick="setSQLTemplate('UPDATE Herramienta SET costo_energia = 5 WHERE nombre = \'Bomba Lógica\';')">UPDATE Bomba (Bajo Costo)</button>
+                        </div>
+                        <div class="sql-console-output" id="sql-console-output">
+                            <span style="color: var(--text-muted);">Escribe una consulta SQL y presiona Enter o el botón EXECUTE. Puedes usar SELECT y UPDATE sobre las tablas simuladas.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña 2: sp_ActualizarHerramienta -->
+            <div id="admin-tab-edit-tools" class="admin-tab-content" style="display: none;">
+                <div class="profile-card glass">
+                    <h3>🛠️ Procedimiento: sp_ActualizarHerramienta</h3>
+
+                    <div class="tool-edit-grid" id="admin-tools-edit-list">
+                        <!-- Generado por JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña 3: Auditoría -->
+            <div id="admin-tab-audit" class="admin-tab-content" style="display: none;">
+                <div class="data-table-container glass">
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+                        <button class="btn btn-cyan" onclick="exportarTablaExcel('admin-audit-body', 'auditoria_transacciones')">📥 Exportar a Excel</button>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tabla</th>
+                                <th>Operación</th>
+                                <th>Usuario DB</th>
+                                <th>Fecha</th>
+                                <th>Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-audit-body">
+                            <!-- Generado por JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pestaña 4: Esquema -->
+            <div id="admin-tab-schema" class="admin-tab-content" style="display: none;">
+                <div class="db-schema-wrapper glass">
+                    <div class="db-schema-grid">
+                        
+                        <!-- TABLA USUARIO -->
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">
+                                <span class="schema-table-name">Usuario</span>
+                                <span class="schema-table-rows-count" id="schema-count-usuarios">8 filas</span>
+                            </div>
+                            <div class="schema-table-columns">
+                                <div class="schema-column"><span class="schema-col-name pk">id_usuario</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">nombre_usuario</span><span class="schema-col-type">varchar(50)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">correo</span><span class="schema-col-type">varchar(100)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">contrasena</span><span class="schema-col-type">varchar(255)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">fecha_registro</span><span class="schema-col-type">datetime</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA JUGADOR -->
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">
+                                <span class="schema-table-name">Jugador</span>
+                                <span class="schema-table-rows-count" id="schema-count-jugadores">8 filas</span>
+                            </div>
+                            <div class="schema-table-columns">
+                                <div class="schema-column"><span class="schema-col-name pk">id_jugador</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_usuario</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">nivel</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">experiencia</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">victorias</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">derrotas</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">partidas_jugadas</span><span class="schema-col-type">int</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA HERRAMIENTA -->
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">
+                                <span class="schema-table-name">Herramienta</span>
+                                <span class="schema-table-rows-count" id="schema-count-herramientas">8 filas</span>
+                            </div>
+                            <div class="schema-table-columns">
+                                <div class="schema-column"><span class="schema-col-name pk">id_herramienta</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">nombre</span><span class="schema-col-type">varchar(50)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">icono</span><span class="schema-col-type">varchar(10)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">tipo</span><span class="schema-col-type">varchar(20)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">descripcion</span><span class="schema-col-type">text</span></div>
+                                <div class="schema-column"><span class="schema-col-name">daño</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">costo_energia</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">cooldown</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">nivel_req</span><span class="schema-col-type">int</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA PARTIDA -->
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">
+                                <span class="schema-table-name">Partida</span>
+                                <span class="schema-table-rows-count" id="schema-count-partidas">8 filas</span>
+                            </div>
+                            <div class="schema-table-columns">
+                                <div class="schema-column"><span class="schema-col-name pk">id_partida</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_jugador1</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_jugador2</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">ganador</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">turnos</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">fecha</span><span class="schema-col-type">date</span></div>
+                                <div class="schema-column"><span class="schema-col-name">duracion</span><span class="schema-col-type">varchar(10)</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA AUDITORIA -->
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">
+                                <span class="schema-table-name">AuditoriaPartida</span>
+                                <span class="schema-table-rows-count" id="schema-count-auditoria">0 filas</span>
+                            </div>
+                            <div class="schema-table-columns">
+                                <div class="schema-column"><span class="schema-col-name pk">id_auditoria</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">tabla_afectada</span><span class="schema-col-type">varchar(50)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">operacion</span><span class="schema-col-type">varchar(10)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">usuario_db</span><span class="schema-col-type">varchar(50)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">fecha</span><span class="schema-col-type">datetime</span></div>
+                                <div class="schema-column"><span class="schema-col-name">detalles</span><span class="schema-col-type">text</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA TORNEO -->
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">
+                                <span class="schema-table-name">Torneo</span>
+                                <span class="schema-table-rows-count">3 filas</span>
+                            </div>
+                            <div class="schema-table-columns">
+                                <div class="schema-column"><span class="schema-col-name pk">id_torneo</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">nombre</span><span class="schema-col-type">varchar(100)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">estado</span><span class="schema-col-type">varchar(20)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">participantes</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">ganador</span><span class="schema-col-type">varchar(50)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">premio</span><span class="schema-col-type">varchar(50)</span></div>
+                                <div class="schema-column"><span class="schema-col-name">fecha</span><span class="schema-col-type">date</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA HERRAMIENTA_JUGADOR -->
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">
+                                <span class="schema-table-name">HerramientaJugador</span>
+                                <span class="schema-table-rows-count">Relación N:M</span>
+                            </div>
+                            <div class="schema-table-columns">
+                                <div class="schema-column"><span class="schema-col-name pk">id_hj</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_jugador</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_herramienta</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">desbloqueada</span><span class="schema-col-type">bit</span></div>
+                                <div class="schema-column"><span class="schema-col-name">fecha_desbloqueo</span><span class="schema-col-type">datetime</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA EQUIPO -->
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">
+                                <span class="schema-table-name">Equipo</span>
+                                <span class="schema-table-rows-count">4 filas</span>
+                            </div>
+                            <div class="schema-table-columns">
+                                <div class="schema-column"><span class="schema-col-name pk">id_equipo</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">nombre</span><span class="schema-col-type">varchar(50)</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_lider</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">fecha_creacion</span><span class="schema-col-type">datetime</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA EQUIPO_JUGADOR -->
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">
+                                <span class="schema-table-name">EquipoJugador</span>
+                                <span class="schema-table-rows-count">Relación N:M</span>
+                            </div>
+                            <div class="schema-table-columns">
+                                <div class="schema-column"><span class="schema-col-name pk">id_ej</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_equipo</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_jugador</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">rol_equipo</span><span class="schema-col-type">varchar(20)</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA INSCRIPCION -->
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">
+                                <span class="schema-table-name">Inscripcion</span>
+                                <span class="schema-table-rows-count">Rel. Torneo</span>
+                            </div>
+                            <div class="schema-table-columns">
+                                <div class="schema-column"><span class="schema-col-name pk">id_inscripcion</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_torneo</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_equipo</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">fecha_inscripcion</span><span class="schema-col-type">datetime</span></div>
+                                <div class="schema-column"><span class="schema-col-name">estado</span><span class="schema-col-type">varchar(20)</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA MOVIMIENTO_PARTIDA -->
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">
+                                <span class="schema-table-name">MovimientoPartida</span>
+                                <span class="schema-table-rows-count">Log Turnos</span>
+                            </div>
+                            <div class="schema-table-columns">
+                                <div class="schema-column"><span class="schema-col-name pk">id_movimiento</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_partida</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_jugador</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_herramienta</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">turno</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">daño_causado</span><span class="schema-col-type">int</span></div>
+                            </div>
+                        </div>
+
+                        <!-- TABLA RANKING -->
+                        <div class="schema-table-card">
+                            <div class="schema-table-header">
+                                <span class="schema-table-name">Ranking</span>
+                                <span class="schema-table-rows-count">Vista + Tabla</span>
+                            </div>
+                            <div class="schema-table-columns">
+                                <div class="schema-column"><span class="schema-col-name pk">id_ranking</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name fk">id_jugador</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">posicion</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">puntos</span><span class="schema-col-type">int</span></div>
+                                <div class="schema-column"><span class="schema-col-name">temporada</span><span class="schema-col-type">varchar(20)</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña 6: Reportes por Jugador -->
+            <div id="admin-tab-reports" class="admin-tab-content" style="display: none;">
+                <div class="profile-card glass" style="margin-bottom: 16px;">
+                    <h3>📊 Generador de Reportes de Base de Datos</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px;">
+                        Selecciona un jugador del sistema y el tipo de reporte deseado para filtrar la información y exportarla de forma limpia a una hoja de cálculo profesional.
+                    </p>
+                    
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; background: rgba(0, 0, 0, 0.2); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+                        <div style="display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 200px;">
+                            <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-soft); text-transform: uppercase;">👤 Seleccionar Hacker (Jugador)</label>
+                            <select id="report-player-select" style="background: #0d111d; color: var(--text); border: 1px solid var(--border); padding: 8px 12px; border-radius: 6px; font-size: 0.82rem; outline: none; width: 100%;">
+                                <!-- Se llenará dinámicamente con JS -->
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 200px;">
+                            <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-soft); text-transform: uppercase;">📋 Tipo de Reporte</label>
+                            <select id="report-type-select" style="background: #0d111d; color: var(--text); border: 1px solid var(--border); padding: 8px 12px; border-radius: 6px; font-size: 0.82rem; outline: none; width: 100%;">
+                                <option value="general">Estadísticas Generales del Perfil</option>
+                                <option value="partidas">Historial de Partidas Ejecutadas</option>
+                                <option value="auditoria">Logs de Auditoría de Transacciones</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; align-items: flex-end; gap: 8px;">
+                            <button class="btn btn-primary" onclick="generarReporteAdministrador()" style="padding: 10px 20px; font-size: 0.8rem; height: 38px;">🔍 FILTRAR DATOS</button>
+                            <button class="btn btn-cyan" onclick="exportarReporteAdministradorExcel()" style="padding: 10px 20px; font-size: 0.8rem; height: 38px;">📥 EXPORTAR A EXCEL</button>
+                        </div>
+                    </div>
+
+                    <!-- SQL Query Viewer -->
+                    <div class="code-window" style="margin-bottom: 16px;">
+                        <div class="code-window-header">
+                            <div class="code-window-dots">
+                                <div class="code-window-dot red"></div>
+                                <div class="code-window-dot yellow"></div>
+                                <div class="code-window-dot green"></div>
+                            </div>
+                            <div class="code-window-title" id="report-query-title">Consulta SQL</div>
+                            <div class="code-window-lang">T-SQL</div>
+                        </div>
+                        <pre class="code-window-body" id="report-query-code" style="min-height: 60px;"><span style="color: var(--text-muted);">-- Selecciona un jugador y tipo de reporte para ver la consulta SQL generada.</span></pre>
+                    </div>
+
+                    <!-- Data Grid View -->
+                    <div class="data-table-container glass" style="margin-top: 16px;">
+                        <table class="data-table" id="report-data-table">
+                            <thead id="report-table-head">
+                                <!-- Dinámico -->
+                            </thead>
+                            <tbody id="report-table-body">
+                                <tr><td colspan="100%" style="text-align: center; color: var(--text-muted); padding: 24px;">Selecciona un jugador y haz clic en Filtrar Datos para generar el reporte.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal Certificación de Base de Datos -->
+    <div class="modal-overlay" id="modal-certificacion">
+        <div class="modal-content" style="max-width: 500px; border: 1px solid var(--accent); border-top: 4px solid var(--accent);">
+            <div class="result-icon">🛡️</div>
+            <div class="result-title" style="color: var(--teal-light); font-size: 1.3rem;">CERTIFICADO DE SEGURIDAD Y ENCRIPTACIÓN</div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 12px;">Microsoft SQL Server Database Authenticated</div>
+            
+            <div class="result-stats" style="text-align: left; font-size: 0.75rem; line-height: 1.5;">
+                <div style="margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+                    <strong>Base de Datos:</strong> <span style="font-family: var(--font-mono); color: var(--accent);">HackBattleDB_Production</span>
+                </div>
+                <div style="margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+                    <strong>Método de Encriptación:</strong> <span style="color: var(--green);">AES_256 (TDE - Transparent Data Encryption)</span>
+                </div>
+                <div style="margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+                    <strong>Certificado Oficial:</strong> <span style="font-family: var(--font-mono); color: var(--gold-light);">Cert_HackBattle_2026_SQLServer</span>
+                </div>
+                <div style="margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+                    <strong>Hash de Integridad (SHA-256):</strong> <br>
+                    <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); word-break: break-all;">8f9a2e3b1c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f</span>
+                </div>
+                <div style="margin-bottom: 4px;">
+                    <strong>Estado de Auditoría C2:</strong> <span style="color: var(--green);">✔️ COMPLIANT (ISO/IEC 27001)</span>
+                </div>
+            </div>
+            
+            <div style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 16px;">
+                Este certificado garantiza que toda la información de usuarios, partidas y transacciones está resguardada por políticas estrictas de control de acceso discrecional (DAC) en SQL Server.
+            </div>
+            
+            <button class="btn btn-primary" onclick="cerrarCertificado()" style="padding: 8px 20px;">ENTENDIDO</button>
+        </div>
+    </div>
+
+    <!-- Área de alertas de triggers y procedures simulados -->
+    <div class="db-alert-area" id="db-alert-area"></div>
+
+    <!-- Modal Resultado -->
+    <div class="modal-overlay" id="modal-resultado">
+        <div class="modal-content" id="modal-content">
+            <div class="result-icon" id="result-icon">🏆</div>
+            <div class="result-title" id="result-title">¡VICTORIA!</div>
+            <div style="color: var(--text-muted); font-size: 0.88rem; margin-top: 4px;" id="result-subtitle"></div>
+            <div class="result-stats">
+                <div class="result-stat"><span class="label">Turnos jugados</span><span class="value" id="result-turns">0</span></div>
+                <div class="result-stat"><span class="label">Seguridad restante</span><span class="value" id="result-hp-left">0%</span></div>
+                <div class="result-stat"><span class="label">Experiencia ganada</span><span class="value" id="result-xp">+100 XP</span></div>
+            </div>
+            <div class="result-stats" id="result-stats-extra" style="margin-top: 8px;"></div>
+            <div class="modal-buttons">
+                <button class="btn btn-primary btn-lg" onclick="revancha()">⚔️ Revancha</button>
+                <button class="btn btn-cyan btn-lg" onclick="cerrarModal()">🏠 Menú</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+    <script>
+    // ===== PARTICLE SYSTEM =====
+    (function() {
+        const canvas = document.getElementById('particle-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const chars = '01アイウエオカキクケコ<>{}[]=/\\*+-';
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        function createParticle() {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                char: chars[Math.floor(Math.random() * chars.length)],
+                speed: Math.random() * 0.3 + 0.1,
+                opacity: Math.random() * 0.3 + 0.05,
+                size: Math.random() * 10 + 8
+            };
+        }
+
+        for (let i = 0; i < 40; i++) particles.push(createParticle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.font = `${p.size}px 'JetBrains Mono', monospace`;
+                ctx.fillStyle = `rgba(139, 92, 246, ${p.opacity})`;
+                ctx.fillText(p.char, p.x, p.y);
+                p.y += p.speed;
+                if (p.y > canvas.height + 20) {
+                    p.y = -20;
+                    p.x = Math.random() * canvas.width;
+                    p.char = chars[Math.floor(Math.random() * chars.length)];
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    })();
+    </script>
+</body>
+</html>

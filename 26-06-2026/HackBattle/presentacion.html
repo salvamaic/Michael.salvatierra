@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HACK BATTLE — Presentación del Proyecto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a12;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --purple: #8b5cf6;
+            --purple-light: #a78bfa;
+            --magenta: #ec4899;
+            --cyan: #22d3ee;
+            --green: #34d399;
+            --red: #f43f5e;
+            --yellow: #fbbf24;
+            --blue: #3b82f6;
+            --text: #f1f5f9;
+            --text-dim: #64748b;
+            --border: rgba(139, 92, 246, 0.15);
+            --font: 'Inter', -apple-system, sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+            --title: 'Orbitron', sans-serif;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* ===== SLIDES ===== */
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: none;
+            padding: 60px 80px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            opacity: 1;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ===== SLIDE COVER ===== */
+        .slide-cover {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(ellipse at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+        }
+
+        .cover-badge {
+            display: inline-block;
+            padding: 6px 20px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--purple-light);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .cover-title {
+            font-family: var(--title);
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--purple), var(--magenta), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            letter-spacing: 4px;
+        }
+
+        .cover-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            font-weight: 400;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+        }
+
+        .cover-meta {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 2;
+        }
+
+        .cover-meta strong { color: var(--text); font-weight: 600; }
+
+        .cover-divider {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--purple), var(--magenta));
+            border-radius: 2px;
+            margin: 25px auto;
+        }
+
+        /* ===== SLIDE HEADERS ===== */
+        .slide-header {
+            margin-bottom: 40px;
+            flex-shrink: 0;
+        }
+
+        .slide-number {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--purple);
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+
+        .slide-title {
+            font-family: var(--title);
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: 2px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .slide-title span {
+            background: linear-gradient(135deg, var(--purple), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== CONTENT ===== */
+        .slide-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .two-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .three-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--purple-light);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        /* Texto */
+        p, .desc {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-dim);
+        }
+
+        .highlight { color: var(--text); font-weight: 600; }
+        .purple { color: var(--purple-light); }
+        .cyan { color: var(--cyan); }
+        .magenta { color: var(--magenta); }
+        .green { color: var(--green); }
+        .yellow { color: var(--yellow); }
+        .red { color: var(--red); }
+
+        /* Listas */
+        ul { list-style: none; }
+
+        ul li {
+            padding: 8px 0;
+            font-size: 1rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            line-height: 1.5;
+        }
+
+        ul li::before {
+            content: '▸';
+            color: var(--purple);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        ul li strong { color: var(--text); }
+
+        /* Tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        table th {
+            padding: 12px 14px;
+            text-align: left;
+            font-size: 0.75rem;
+            color: var(--purple-light);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--border);
+            background: rgba(0,0,0,0.2);
+            font-weight: 700;
+        }
+
+        table td {
+            padding: 11px 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            color: var(--text-dim);
+        }
+
+        table td:first-child { color: var(--text); font-weight: 500; }
+
+        table tr:hover td { background: rgba(139, 92, 246, 0.04); }
+
+        /* Code blocks */
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 22px;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            line-height: 1.7;
+            color: var(--text-dim);
+            overflow-x: auto;
+        }
+
+        .code-block .keyword { color: var(--magenta); font-weight: 600; }
+        .code-block .table-name { color: var(--cyan); }
+        .code-block .comment { color: #4a5568; }
+        .code-block .string { color: var(--green); }
+        .code-block .function { color: var(--yellow); }
+
+        /* Badges de equipo */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .team-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 35px 25px;
+            text-align: center;
+        }
+
+        .team-card .avatar {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .team-card .name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        .team-card .role {
+            font-size: 0.8rem;
+            color: var(--purple-light);
+            letter-spacing: 1px;
+        }
+
+        /* Diagrama */
+        .diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+
+        .diagram-box {
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 1px;
+            min-width: 140px;
+        }
+
+        .diagram-arrow {
+            font-size: 1.4rem;
+            color: var(--text-dim);
+            padding: 0 8px;
+        }
+
+        .db-purple { background: rgba(139, 92, 246, 0.12); border: 1px solid rgba(139, 92, 246, 0.3); color: var(--purple-light); }
+        .db-cyan { background: rgba(34, 211, 238, 0.1); border: 1px solid rgba(34, 211, 238, 0.25); color: var(--cyan); }
+        .db-magenta { background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.25); color: var(--magenta); }
+        .db-green { background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.25); color: var(--green); }
+        .db-yellow { background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.25); color: var(--yellow); }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .tag-purple { background: rgba(139,92,246,0.12); color: var(--purple-light); border: 1px solid rgba(139,92,246,0.25); }
+        .tag-cyan { background: rgba(34,211,238,0.08); color: var(--cyan); border: 1px solid rgba(34,211,238,0.2); }
+        .tag-magenta { background: rgba(236,72,153,0.08); color: var(--magenta); border: 1px solid rgba(236,72,153,0.2); }
+        .tag-green { background: rgba(52,211,153,0.08); color: var(--green); border: 1px solid rgba(52,211,153,0.2); }
+
+        /* ===== NAVEGACIÓN ===== */
+        .nav-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 40px;
+            background: rgba(10, 10, 18, 0.9);
+            border-top: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .nav-bar .page-info {
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .nav-bar .page-info .current { color: var(--purple-light); font-weight: 700; }
+
+        .nav-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            border-color: var(--purple);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--purple), var(--magenta), var(--cyan));
+            transition: width 0.4s ease;
+            z-index: 101;
+        }
+
+        /* ===== SLIDE ESPECÍFICOS ===== */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .feature-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .feature-item .f-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+        .feature-item .f-name { font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .feature-item .f-desc { font-size: 0.72rem; color: var(--text-dim); line-height: 1.4; }
+
+        /* Herramientas del juego */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .tool-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .tool-item .t-icon { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+        .tool-item .t-name { font-size: 0.78rem; font-weight: 700; color: var(--text); }
+        .tool-item .t-type { font-size: 0.65rem; margin-top: 3px; }
+        .tool-item .t-stats { font-size: 0.65rem; color: var(--text-dim); margin-top: 4px; }
+
+        .compact-table td, .compact-table th { padding: 8px 12px; font-size: 0.82rem; }
+
+        .slide-body.scrollable { overflow-y: auto; padding-bottom: 30px; }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="slide-container" id="slideContainer">
+
+    <!-- ===== SLIDE 1: PORTADA ===== -->
+    <div class="slide slide-cover active" data-slide="1">
+        <div class="cover-badge">Universidad Privada Domingo Savio</div>
+        <div class="cover-title">HACK BATTLE</div>
+        <div class="cover-subtitle">Sistema de Gestión de Torneos de Hackeo Competitivo</div>
+        <div class="cover-divider"></div>
+        <div class="cover-meta">
+            <strong>Materia:</strong> Tecnología de Base de Datos<br>
+            <strong>Docente:</strong> Ing. Salas Marianela<br>
+            <strong>SGBD:</strong> Microsoft SQL Server &nbsp;|&nbsp; <strong>Lenguaje:</strong> Java Swing + JDBC<br><br>
+            <strong>Castro Alvarado Lucas Ivan</strong> &nbsp;·&nbsp;
+            <strong>Nina Córdoba Jhosmar Alejandro</strong> &nbsp;·&nbsp;
+            <strong>Salvatierra López Michael Gonzalo</strong><br><br>
+            26 de Junio, 2026
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 2: EQUIPO ===== -->
+    <div class="slide" data-slide="2">
+        <div class="slide-header">
+            <div class="slide-number">02 / 17</div>
+            <h2 class="slide-title">EQUIPO DE <span>DESARROLLO</span></h2>
+        </div>
+        <div class="slide-body">
+            <div class="team-grid">
+                <div class="team-card">
+                    <span class="avatar">👨‍💻</span>
+                    <div class="name">Castro Alvarado Lucas Ivan</div>
+                    <div class="role">Desarrollador Backend & BD</div>
+                    <div style="margin-top: 12px;">
+                        <span class="tag tag-purple">SQL Server</span>
+                        <span class="tag tag-cyan">Triggers</span>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <span class="avatar">🧑‍💻</span>
+                    <div class="name">Nina Córdoba Jhosmar Alejandro</div>
+                    <div class="role">Desarrollador Frontend & UI</div>
+                    <div style="margin-top: 12px;">
+                        <span class="tag tag-magenta">Java Swing</span>
+                        <span class="tag tag-green">UI/UX</span>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <span class="avatar">👨‍💻</span>
+                    <div class="name">Salvatierra López Michael Gonzalo</div>
+                    <div class="role">Líder de Proyecto & Integración</div>
+                    <div style="margin-top: 12px;">
+                        <span class="tag tag-cyan">JDBC</span>
+                        <span class="tag tag-purple">Arquitectura</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 3: INTRODUCCIÓN ===== -->
+    <div class="slide" data-slide="3">
+        <div class="slide-header">
+            <div class="slide-number">03 / 17</div>
+            <h2 class="slide-title">MARCO <span>INTRODUCTORIO</span></h2>
+        </div>
+        <div class="slide-body">
+            <p style="font-size: 1.15rem; line-height: 2; max-width: 900px;">
+                El mundo del <span class="highlight">hackeo ético y la ciberseguridad</span> ha crecido exponencialmente,
+                generando la necesidad de plataformas que permitan simular y competir en entornos controlados.
+                <br><br>
+                <span class="highlight">HACK BATTLE</span> surge como una solución informática orientada a la
+                <span class="purple">gestión de competencias de hackeo simulado</span>, permitiendo registrar jugadores,
+                administrar herramientas, crear torneos, gestionar partidas por turnos y controlar rankings globales.
+                <br><br>
+                El sistema integra todos los conceptos aprendidos en la materia:
+                <span class="cyan">tablas relacionales</span>,
+                <span class="magenta">triggers</span>,
+                <span class="green">vistas</span>,
+                <span class="yellow">procedimientos almacenados</span>,
+                subconsultas y seguridad de usuarios.
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 4: PLANTEAMIENTO ===== -->
+    <div class="slide" data-slide="4">
+        <div class="slide-header">
+            <div class="slide-number">04 / 17</div>
+            <h2 class="slide-title">PLANTEAMIENTO DEL <span>PROBLEMA</span></h2>
+        </div>
+        <div class="slide-body">
+            <div class="two-cols">
+                <div>
+                    <div class="card">
+                        <div class="card-title">❓ Problema</div>
+                        <p>La simulación de competencias de hackeo actualmente carece de plataformas organizadas que permitan
+                        gestionar jugadores, herramientas, partidas y resultados de manera estructurada, eficiente y segura.</p>
+                    </div>
+                    <br>
+                    <div class="card">
+                        <div class="card-title">🎯 Pregunta de investigación</div>
+                        <p>¿Cómo desarrollar un sistema que permita administrar torneos de hackeo simulado
+                        utilizando una base de datos relacional con SQL Server y una interfaz gráfica en Java?</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="card">
+                        <div class="card-title">💡 Solución propuesta</div>
+                        <ul>
+                            <li>Base de datos relacional con <strong>12 tablas</strong></li>
+                            <li>Sistema de <strong>10 triggers</strong> para lógica de negocio</li>
+                            <li><strong>5 vistas</strong> para consultas optimizadas</li>
+                            <li><strong>5 procedimientos almacenados</strong> para operaciones</li>
+                            <li><strong>5 subconsultas</strong> avanzadas</li>
+                            <li>Interfaz gráfica en <strong>Java Swing + JDBC</strong></li>
+                            <li>Gestión de <strong>usuarios y roles</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 5: OBJETIVOS ===== -->
+    <div class="slide" data-slide="5">
+        <div class="slide-header">
+            <div class="slide-number">05 / 17</div>
+            <h2 class="slide-title"><span>OBJETIVOS</span></h2>
+        </div>
+        <div class="slide-body">
+            <div class="two-cols">
+                <div class="card">
+                    <div class="card-title">🎯 Objetivo General</div>
+                    <p style="font-size: 1.05rem; line-height: 1.8;">
+                        Desarrollar un sistema de gestión de torneos de hackeo simulado utilizando
+                        <span class="highlight">Java y SQL Server</span>, permitiendo administrar jugadores,
+                        herramientas, partidas por turnos, equipos y rankings globales.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-title">📋 Objetivos Específicos</div>
+                    <ul>
+                        <li>Diseñar una base de datos relacional con <strong>12 tablas</strong> normalizadas</li>
+                        <li>Implementar conexión <strong>Java - SQL Server</strong> mediante JDBC</li>
+                        <li>Crear operaciones <strong>CRUD</strong> completas</li>
+                        <li>Implementar <strong>triggers, vistas y procedures</strong></li>
+                        <li>Desarrollar interfaz gráfica <strong>temática cyberpunk</strong></li>
+                        <li>Gestionar <strong>seguridad</strong> con usuarios y roles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 6: TECNOLOGÍAS ===== -->
+    <div class="slide" data-slide="6">
+        <div class="slide-header">
+            <div class="slide-number">06 / 17</div>
+            <h2 class="slide-title">SGBD Y <span>TECNOLOGÍAS</span></h2>
+        </div>
+        <div class="slide-body">
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <span class="f-icon">🗄️</span>
+                    <div class="f-name">SQL Server</div>
+                    <div class="f-desc">Motor de base de datos relacional. Integridad referencial, claves primarias y foráneas.</div>
+                </div>
+                <div class="feature-item">
+                    <span class="f-icon">☕</span>
+                    <div class="f-name">Java</div>
+                    <div class="f-desc">Lenguaje de programación para la lógica de negocio y la interfaz gráfica.</div>
+                </div>
+                <div class="feature-item">
+                    <span class="f-icon">🖼️</span>
+                    <div class="f-name">Java Swing</div>
+                    <div class="f-desc">Framework gráfico para la interfaz de usuario con tema cyberpunk personalizado.</div>
+                </div>
+                <div class="feature-item">
+                    <span class="f-icon">🔌</span>
+                    <div class="f-name">JDBC</div>
+                    <div class="f-desc">Conectividad Java-SQL Server para operaciones de datos en tiempo real.</div>
+                </div>
+            </div>
+            <br>
+            <div class="card">
+                <div class="card-title">¿Por qué SQL Server?</div>
+                <div class="two-cols" style="gap: 20px;">
+                    <ul>
+                        <li><strong>Seguridad</strong> — Control de acceso por roles y usuarios</li>
+                        <li><strong>Compatibilidad</strong> — Integración nativa con JDBC</li>
+                    </ul>
+                    <ul>
+                        <li><strong>Transacciones</strong> — Manejo robusto de datos</li>
+                        <li><strong>Herramientas</strong> — SQL Server Management Studio</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 7: ARQUITECTURA ===== -->
+    <div class="slide" data-slide="7">
+        <div class="slide-header">
+            <div class="slide-number">07 / 17</div>
+            <h2 class="slide-title">ARQUITECTURA DEL <span>SISTEMA</span></h2>
+        </div>
+        <div class="slide-body">
+            <div class="diagram" style="margin-bottom: 35px;">
+                <div class="diagram-box db-magenta">🖼️ Vista<br><small>Java Swing</small></div>
+                <div class="diagram-arrow">→</div>
+                <div class="diagram-box db-purple">⚙️ Controlador<br><small>Lógica del Juego</small></div>
+                <div class="diagram-arrow">→</div>
+                <div class="diagram-box db-cyan">📦 DAO<br><small>Acceso a Datos</small></div>
+                <div class="diagram-arrow">→</div>
+                <div class="diagram-box db-green">🔌 JDBC<br><small>Conexión</small></div>
+                <div class="diagram-arrow">→</div>
+                <div class="diagram-box db-yellow">🗄️ SQL Server<br><small>HackBattleDB</small></div>
+            </div>
+            <div class="two-cols">
+                <div class="card">
+                    <div class="card-title">📁 Capa Modelo</div>
+                    <ul>
+                        <li><strong>Jugador.java</strong> — Entidad del jugador</li>
+                        <li><strong>Herramienta.java</strong> — Herramientas de hackeo</li>
+                        <li><strong>Partida.java</strong> — Registro de partidas</li>
+                        <li><strong>Torneo.java</strong> — Datos de torneos</li>
+                        <li><strong>Ranking.java</strong> — Clasificación global</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title">📁 Capa DAO</div>
+                    <ul>
+                        <li><strong>JugadorDAO</strong> — CRUD de jugadores</li>
+                        <li><strong>HerramientaDAO</strong> — Gestión de herramientas</li>
+                        <li><strong>PartidaDAO</strong> — Registro de partidas</li>
+                        <li><strong>TorneoDAO</strong> — Administración de torneos</li>
+                        <li><strong>RankingDAO</strong> — Consulta de rankings</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 8: MECÁNICA DEL JUEGO ===== -->
+    <div class="slide" data-slide="8">
+        <div class="slide-header">
+            <div class="slide-number">08 / 17</div>
+            <h2 class="slide-title">MECÁNICA DEL <span>JUEGO</span></h2>
+        </div>
+        <div class="slide-body">
+            <div class="two-cols">
+                <div>
+                    <div class="card">
+                        <div class="card-title">⚔️ Concepto</div>
+                        <ul>
+                            <li>Dos hackers se enfrentan en <strong>turnos</strong></li>
+                            <li>Cada uno tiene un servidor con <strong>100 pts de seguridad</strong></li>
+                            <li>Se inicia con <strong>100 de energía</strong> (+15 por turno)</li>
+                            <li>Se eligen <strong>herramientas</strong> ofensivas, defensivas o utilitarias</li>
+                            <li><strong>Gana</strong> quien reduzca la seguridad rival a 0</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <div class="tool-grid" style="grid-template-columns: repeat(5, 1fr);">
+                        <div class="tool-item"><span class="t-icon">🔥</span><div class="t-name">Virus</div><div class="t-type tag-magenta tag" style="margin-top:4px;">Ofensivo</div><div class="t-stats">-20 dmg · 25⚡</div></div>
+                        <div class="tool-item"><span class="t-icon">💣</span><div class="t-name">Bomba Lógica</div><div class="t-type tag-magenta tag" style="margin-top:4px;">Ofensivo</div><div class="t-stats">-35 dmg · 40⚡</div></div>
+                        <div class="tool-item"><span class="t-icon">🌐</span><div class="t-name">DDoS</div><div class="t-type tag-magenta tag" style="margin-top:4px;">Ofensivo</div><div class="t-stats">-15 + bloqueo</div></div>
+                        <div class="tool-item"><span class="t-icon">🐴</span><div class="t-name">Troyano</div><div class="t-type tag-magenta tag" style="margin-top:4px;">Ofensivo</div><div class="t-stats">-10 x 3 turnos</div></div>
+                        <div class="tool-item"><span class="t-icon">🕳️</span><div class="t-name">Rootkit</div><div class="t-type tag-magenta tag" style="margin-top:4px;">Ofensivo</div><div class="t-stats">-25 (ignora 🛡️)</div></div>
+                        <div class="tool-item"><span class="t-icon">🛡️</span><div class="t-name">Firewall</div><div class="t-type tag-cyan tag" style="margin-top:4px;">Defensivo</div><div class="t-stats">Bloquea ataque</div></div>
+                        <div class="tool-item"><span class="t-icon">🔒</span><div class="t-name">Encriptación</div><div class="t-type tag-cyan tag" style="margin-top:4px;">Defensivo</div><div class="t-stats">+15 seg · 15⚡</div></div>
+                        <div class="tool-item"><span class="t-icon">🌀</span><div class="t-name">VPN</div><div class="t-type tag-cyan tag" style="margin-top:4px;">Defensivo</div><div class="t-stats">Anti-DDoS (2T)</div></div>
+                        <div class="tool-item"><span class="t-icon">🔍</span><div class="t-name">Escáner</div><div class="t-type tag-green tag" style="margin-top:4px;">Utilidad</div><div class="t-stats">Espía rival</div></div>
+                        <div class="tool-item"><span class="t-icon">⚡</span><div class="t-name">Overclock</div><div class="t-type tag-green tag" style="margin-top:4px;">Utilidad</div><div class="t-stats">+30 energía</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 9: BASE DE DATOS ===== -->
+    <div class="slide" data-slide="9">
+        <div class="slide-header">
+            <div class="slide-number">09 / 17</div>
+            <h2 class="slide-title">BASE DE DATOS: <span>HackBattleDB</span></h2>
+        </div>
+        <div class="slide-body scrollable">
+            <p style="margin-bottom: 15px;">Base de datos relacional con <strong class="purple">12 tablas</strong> organizadas en 3 grupos:</p>
+            <div class="three-cols">
+                <div class="card">
+                    <div class="card-title">👤 Tablas Principales</div>
+                    <table class="compact-table">
+                        <tr><td>Usuario</td><td class="text-dim">Cuentas del sistema</td></tr>
+                        <tr><td>Jugador</td><td class="text-dim">Perfil y stats</td></tr>
+                        <tr><td>Herramienta</td><td class="text-dim">Catálogo (8 tools)</td></tr>
+                        <tr><td>HerramientaJugador</td><td class="text-dim">Desbloqueos</td></tr>
+                        <tr><td>Equipo</td><td class="text-dim">Equipos de hackers</td></tr>
+                        <tr><td>EquipoJugador</td><td class="text-dim">Miembros</td></tr>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">🏆 Tablas de Competencia</div>
+                    <table class="compact-table">
+                        <tr><td>Torneo</td><td class="text-dim">Torneos creados</td></tr>
+                        <tr><td>Inscripcion</td><td class="text-dim">Inscripciones</td></tr>
+                        <tr><td>Partida</td><td class="text-dim">Registro partidas</td></tr>
+                        <tr><td>MovimientoPartida</td><td class="text-dim">Cada turno</td></tr>
+                        <tr><td>Ranking</td><td class="text-dim">Clasificación</td></tr>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">📋 Tabla de Auditoría</div>
+                    <table class="compact-table">
+                        <tr><td>AuditoriaPartida</td><td class="text-dim">Log automático</td></tr>
+                    </table>
+                    <br>
+                    <div class="card-title" style="margin-top: 10px;">🔗 Relaciones</div>
+                    <div style="font-size: 0.78rem; color: var(--text-dim); line-height: 1.8; font-family: var(--mono);">
+                        Usuario (1)──(1) Jugador<br>
+                        Jugador (N)──(N) Herramienta<br>
+                        Jugador (N)──(N) Equipo<br>
+                        Equipo (N)──(N) Torneo<br>
+                        Partida (1)──(N) Movimiento<br>
+                        Jugador (1)──(1) Ranking
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 10: CÓDIGO SQL ===== -->
+    <div class="slide" data-slide="10">
+        <div class="slide-header">
+            <div class="slide-number">10 / 17</div>
+            <h2 class="slide-title">CÓDIGO <span>SQL — TABLAS</span></h2>
+        </div>
+        <div class="slide-body">
+            <div class="two-cols">
+                <div class="code-block">
+                    <span class="comment">-- Tabla Usuario</span><br>
+                    <span class="keyword">CREATE TABLE</span> <span class="table-name">Usuario</span> (<br>
+                    &nbsp;&nbsp;id_usuario <span class="keyword">INT PRIMARY KEY IDENTITY</span>(1,1),<br>
+                    &nbsp;&nbsp;nombre_usuario <span class="keyword">VARCHAR</span>(50) <span class="keyword">NOT NULL</span>,<br>
+                    &nbsp;&nbsp;correo <span class="keyword">VARCHAR</span>(100) <span class="keyword">UNIQUE NOT NULL</span>,<br>
+                    &nbsp;&nbsp;contrasena <span class="keyword">VARCHAR</span>(100) <span class="keyword">NOT NULL</span>,<br>
+                    &nbsp;&nbsp;fecha_registro <span class="keyword">DATE DEFAULT</span> <span class="function">GETDATE</span>()<br>
+                    );<br><br>
+                    <span class="comment">-- Tabla Jugador</span><br>
+                    <span class="keyword">CREATE TABLE</span> <span class="table-name">Jugador</span> (<br>
+                    &nbsp;&nbsp;id_jugador <span class="keyword">INT PRIMARY KEY IDENTITY</span>(1,1),<br>
+                    &nbsp;&nbsp;id_usuario <span class="keyword">INT NOT NULL</span>,<br>
+                    &nbsp;&nbsp;nivel <span class="keyword">INT DEFAULT</span> 1,<br>
+                    &nbsp;&nbsp;experiencia <span class="keyword">INT DEFAULT</span> 0,<br>
+                    &nbsp;&nbsp;victorias <span class="keyword">INT DEFAULT</span> 0,<br>
+                    &nbsp;&nbsp;derrotas <span class="keyword">INT DEFAULT</span> 0,<br>
+                    &nbsp;&nbsp;<span class="keyword">FOREIGN KEY</span> (id_usuario)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">REFERENCES</span> <span class="table-name">Usuario</span>(id_usuario)<br>
+                    );
+                </div>
+                <div class="code-block">
+                    <span class="comment">-- Tabla Herramienta</span><br>
+                    <span class="keyword">CREATE TABLE</span> <span class="table-name">Herramienta</span> (<br>
+                    &nbsp;&nbsp;id_herramienta <span class="keyword">INT PRIMARY KEY IDENTITY</span>(1,1),<br>
+                    &nbsp;&nbsp;nombre <span class="keyword">VARCHAR</span>(50) <span class="keyword">NOT NULL</span>,<br>
+                    &nbsp;&nbsp;tipo <span class="keyword">VARCHAR</span>(20),<br>
+                    &nbsp;&nbsp;daño <span class="keyword">INT</span>,<br>
+                    &nbsp;&nbsp;costo_energia <span class="keyword">INT</span>,<br>
+                    &nbsp;&nbsp;cooldown <span class="keyword">INT</span>,<br>
+                    &nbsp;&nbsp;nivel_requerido <span class="keyword">INT DEFAULT</span> 1<br>
+                    );<br><br>
+                    <span class="comment">-- Tabla Partida</span><br>
+                    <span class="keyword">CREATE TABLE</span> <span class="table-name">Partida</span> (<br>
+                    &nbsp;&nbsp;id_partida <span class="keyword">INT PRIMARY KEY IDENTITY</span>(1,1),<br>
+                    &nbsp;&nbsp;id_jugador1 <span class="keyword">INT NOT NULL</span>,<br>
+                    &nbsp;&nbsp;id_jugador2 <span class="keyword">INT NOT NULL</span>,<br>
+                    &nbsp;&nbsp;ganador <span class="keyword">INT</span>,<br>
+                    &nbsp;&nbsp;turnos <span class="keyword">INT</span>,<br>
+                    &nbsp;&nbsp;fecha <span class="keyword">DATE DEFAULT</span> <span class="function">GETDATE</span>(),<br>
+                    &nbsp;&nbsp;<span class="keyword">FOREIGN KEY</span> (id_jugador1)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">REFERENCES</span> <span class="table-name">Jugador</span>(id_jugador)<br>
+                    );
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 11: TRIGGERS ===== -->
+    <div class="slide" data-slide="11">
+        <div class="slide-header">
+            <div class="slide-number">11 / 17</div>
+            <h2 class="slide-title"><span>TRIGGERS</span> — 10 Implementados</h2>
+        </div>
+        <div class="slide-body scrollable">
+            <table>
+                <thead>
+                    <tr><th>#</th><th>Nombre</th><th>Tabla</th><th>Tipo</th><th>Función</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>trg_CrearPerfil</td><td>Usuario</td><td><span class="tag tag-green">AFTER INSERT</span></td><td>Crea perfil de Jugador al registrar usuario</td></tr>
+                    <tr><td>2</td><td>trg_ActualizarRanking</td><td>Partida</td><td><span class="tag tag-green">AFTER INSERT</span></td><td>Actualiza wins/losses del ranking</td></tr>
+                    <tr><td>3</td><td>trg_RegistrarAuditoria</td><td>Partida</td><td><span class="tag tag-green">AFTER INSERT</span></td><td>Registra en tabla de auditoría</td></tr>
+                    <tr><td>4</td><td>trg_ValidarEnergia</td><td>MovimientoPartida</td><td><span class="tag tag-cyan">INSTEAD OF</span></td><td>Valida energía suficiente</td></tr>
+                    <tr><td>5</td><td>trg_CalcularDaño</td><td>MovimientoPartida</td><td><span class="tag tag-green">AFTER INSERT</span></td><td>Calcula daño según herramienta</td></tr>
+                    <tr><td>6</td><td>trg_DesbloquearHerramienta</td><td>Ranking</td><td><span class="tag tag-green">AFTER UPDATE</span></td><td>Desbloquea herramientas por nivel</td></tr>
+                    <tr><td>7</td><td>trg_ImpedirEliminar</td><td>Jugador</td><td><span class="tag tag-cyan">INSTEAD OF</span></td><td>Impide eliminar jugador activo</td></tr>
+                    <tr><td>8</td><td>trg_ValidarInscripcion</td><td>Inscripcion</td><td><span class="tag tag-cyan">INSTEAD OF</span></td><td>Verifica equipo con mínimo 1 jugador</td></tr>
+                    <tr><td>9</td><td>trg_ActualizarNivel</td><td>Jugador</td><td><span class="tag tag-green">AFTER UPDATE</span></td><td>Sube nivel basado en experiencia</td></tr>
+                    <tr><td>10</td><td>trg_CancelarTorneo</td><td>Torneo</td><td><span class="tag tag-green">AFTER UPDATE</span></td><td>Actualiza inscripciones al cancelar</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 12: TRIGGER EJEMPLO ===== -->
+    <div class="slide" data-slide="12">
+        <div class="slide-header">
+            <div class="slide-number">12 / 17</div>
+            <h2 class="slide-title">TRIGGER — <span>EJEMPLO DE CÓDIGO</span></h2>
+        </div>
+        <div class="slide-body">
+            <div class="two-cols">
+                <div>
+                    <p style="margin-bottom: 15px; font-weight: 600; color: var(--purple-light);">trg_ActualizarRanking</p>
+                    <div class="code-block">
+                        <span class="keyword">CREATE TRIGGER</span> <span class="function">trg_ActualizarRanking</span><br>
+                        <span class="keyword">ON</span> <span class="table-name">Partida</span><br>
+                        <span class="keyword">AFTER INSERT</span><br>
+                        <span class="keyword">AS</span><br>
+                        <span class="keyword">BEGIN</span><br>
+                        &nbsp;&nbsp;<span class="keyword">SET NOCOUNT ON</span>;<br><br>
+                        &nbsp;&nbsp;<span class="comment">-- Actualizar victorias del ganador</span><br>
+                        &nbsp;&nbsp;<span class="keyword">UPDATE</span> <span class="table-name">Ranking</span><br>
+                        &nbsp;&nbsp;<span class="keyword">SET</span> victorias = victorias + 1<br>
+                        &nbsp;&nbsp;<span class="keyword">FROM</span> <span class="table-name">Ranking</span> r<br>
+                        &nbsp;&nbsp;<span class="keyword">INNER JOIN</span> inserted i<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">ON</span> r.id_jugador = i.ganador;<br><br>
+                        &nbsp;&nbsp;<span class="comment">-- Actualizar derrotas del perdedor</span><br>
+                        &nbsp;&nbsp;<span class="keyword">UPDATE</span> <span class="table-name">Ranking</span><br>
+                        &nbsp;&nbsp;<span class="keyword">SET</span> derrotas = derrotas + 1<br>
+                        &nbsp;&nbsp;<span class="keyword">FROM</span> <span class="table-name">Ranking</span> r<br>
+                        &nbsp;&nbsp;<span class="keyword">INNER JOIN</span> inserted i<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">ON</span> r.id_jugador = <br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">CASE WHEN</span> i.ganador = i.id_jugador1<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">THEN</span> i.id_jugador2<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">ELSE</span> i.id_jugador1 <span class="keyword">END</span>;<br>
+                        <span class="keyword">END</span>;
+                    </div>
+                </div>
+                <div>
+                    <p style="margin-bottom: 15px; font-weight: 600; color: var(--purple-light);">trg_ValidarEnergia</p>
+                    <div class="code-block">
+                        <span class="keyword">CREATE TRIGGER</span> <span class="function">trg_ValidarEnergia</span><br>
+                        <span class="keyword">ON</span> <span class="table-name">MovimientoPartida</span><br>
+                        <span class="keyword">INSTEAD OF INSERT</span><br>
+                        <span class="keyword">AS</span><br>
+                        <span class="keyword">BEGIN</span><br>
+                        &nbsp;&nbsp;<span class="keyword">SET NOCOUNT ON</span>;<br><br>
+                        &nbsp;&nbsp;<span class="keyword">IF EXISTS</span> (<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">SELECT</span> 1 <span class="keyword">FROM</span> inserted i<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">INNER JOIN</span> <span class="table-name">Herramienta</span> h<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">ON</span> i.id_herramienta = h.id_herramienta<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">INNER JOIN</span> <span class="table-name">Jugador</span> j<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">ON</span> i.id_jugador = j.id_jugador<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">WHERE</span> j.energia < h.costo_energia<br>
+                        &nbsp;&nbsp;)<br>
+                        &nbsp;&nbsp;<span class="keyword">BEGIN</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">RAISERROR</span>(<span class="string">'Energía insuficiente'</span>,16,1);<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">RETURN</span>;<br>
+                        &nbsp;&nbsp;<span class="keyword">END</span><br><br>
+                        &nbsp;&nbsp;<span class="comment">-- Si hay energía, insertar</span><br>
+                        &nbsp;&nbsp;<span class="keyword">INSERT INTO</span> <span class="table-name">MovimientoPartida</span><br>
+                        &nbsp;&nbsp;<span class="keyword">SELECT</span> * <span class="keyword">FROM</span> inserted;<br>
+                        <span class="keyword">END</span>;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 13: VISTAS ===== -->
+    <div class="slide" data-slide="13">
+        <div class="slide-header">
+            <div class="slide-number">13 / 17</div>
+            <h2 class="slide-title"><span>VISTAS</span> Y PROCEDURES</h2>
+        </div>
+        <div class="slide-body">
+            <div class="two-cols">
+                <div class="card">
+                    <div class="card-title">👁️ 5 Vistas</div>
+                    <table class="compact-table">
+                        <thead><tr><th>Vista</th><th>Descripción</th></tr></thead>
+                        <tbody>
+                            <tr><td style="color:var(--cyan);">Vista_RankingGlobal</td><td>Top jugadores con wins, losses y nivel</td></tr>
+                            <tr><td style="color:var(--cyan);">Vista_HistorialPartidas</td><td>Partidas con nombres y resultado</td></tr>
+                            <tr><td style="color:var(--cyan);">Vista_TorneosActivos</td><td>Torneos abiertos con inscritos</td></tr>
+                            <tr><td style="color:var(--cyan);">Vista_EstadisticasJugador</td><td>Stats: winrate, herramienta favorita</td></tr>
+                            <tr><td style="color:var(--cyan);">Vista_MovimientosPartida</td><td>Detalle de cada turno</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">⚙️ 5 Procedimientos Almacenados</div>
+                    <table class="compact-table">
+                        <thead><tr><th>Procedure</th><th>Descripción</th></tr></thead>
+                        <tbody>
+                            <tr><td style="color:var(--magenta);">sp_RegistrarJugador</td><td>Crea usuario + jugador + ranking</td></tr>
+                            <tr><td style="color:var(--magenta);">sp_IniciarPartida</td><td>Crea partida y asigna jugadores</td></tr>
+                            <tr><td style="color:var(--magenta);">sp_RealizarMovimiento</td><td>Ejecuta un turno completo</td></tr>
+                            <tr><td style="color:var(--magenta);">sp_FinalizarPartida</td><td>Determina ganador y actualiza XP</td></tr>
+                            <tr><td style="color:var(--magenta);">sp_CrearTorneo</td><td>Crea torneo con cupo máximo</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 14: SUBCONSULTAS ===== -->
+    <div class="slide" data-slide="14">
+        <div class="slide-header">
+            <div class="slide-number">14 / 17</div>
+            <h2 class="slide-title"><span>SUBCONSULTAS</span> Y SEGURIDAD</h2>
+        </div>
+        <div class="slide-body">
+            <div class="two-cols">
+                <div class="card">
+                    <div class="card-title">🔎 5 Subconsultas</div>
+                    <ul>
+                        <li>Jugador con <strong>más victorias</strong> (MAX)</li>
+                        <li>Herramienta <strong>más usada</strong> en partidas (COUNT + GROUP BY)</li>
+                        <li>Jugadores con winrate <strong>superior al promedio</strong> (AVG)</li>
+                        <li>Equipos que han <strong>ganado al menos un torneo</strong> (IN + EXISTS)</li>
+                        <li>Partidas donde se usó la <strong>Bomba Lógica</strong> (subconsulta anidada)</li>
+                    </ul>
+                    <br>
+                    <div class="code-block" style="font-size: 0.75rem;">
+                        <span class="comment">-- Jugadores con winrate superior al promedio</span><br>
+                        <span class="keyword">SELECT</span> nombre, victorias, derrotas<br>
+                        <span class="keyword">FROM</span> <span class="table-name">Vista_RankingGlobal</span><br>
+                        <span class="keyword">WHERE</span> winrate > (<br>
+                        &nbsp;&nbsp;<span class="keyword">SELECT AVG</span>(winrate)<br>
+                        &nbsp;&nbsp;<span class="keyword">FROM</span> <span class="table-name">Vista_RankingGlobal</span><br>
+                        );
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">🔐 Usuarios y Roles</div>
+                    <table class="compact-table">
+                        <thead><tr><th>Login</th><th>Rol</th><th>Permisos</th></tr></thead>
+                        <tbody>
+                            <tr><td style="color:var(--yellow);">admin_hb</td><td>db_owner</td><td>Control total</td></tr>
+                            <tr><td style="color:var(--green);">jugador_hb</td><td>Jugador</td><td>SELECT vistas, EXEC procedures</td></tr>
+                            <tr><td style="color:var(--cyan);">espectador_hb</td><td>Espectador</td><td>Solo SELECT en vistas públicas</td></tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="code-block" style="font-size: 0.75rem;">
+                        <span class="keyword">CREATE LOGIN</span> admin_hb<br>
+                        &nbsp;&nbsp;<span class="keyword">WITH PASSWORD</span> = <span class="string">'Admin123*'</span>;<br><br>
+                        <span class="keyword">CREATE USER</span> admin_hb<br>
+                        &nbsp;&nbsp;<span class="keyword">FOR LOGIN</span> admin_hb;<br><br>
+                        <span class="keyword">ALTER ROLE</span> db_owner<br>
+                        &nbsp;&nbsp;<span class="keyword">ADD MEMBER</span> admin_hb;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 15: INTERFACES ===== -->
+    <div class="slide" data-slide="15">
+        <div class="slide-header">
+            <div class="slide-number">15 / 17</div>
+            <h2 class="slide-title">MODELADO DE <span>INTERFACES</span></h2>
+        </div>
+        <div class="slide-body">
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <span class="f-icon">🔐</span>
+                    <div class="f-name">Login</div>
+                    <div class="f-desc">Autenticación con usuario y contraseña. Estilo terminal cyberpunk.</div>
+                </div>
+                <div class="feature-item">
+                    <span class="f-icon">🏠</span>
+                    <div class="f-name">Menú Principal</div>
+                    <div class="f-desc">6 opciones: Nueva Partida, Ranking, Perfil, Historial, Torneos, Salir.</div>
+                </div>
+                <div class="feature-item">
+                    <span class="f-icon">⚔️</span>
+                    <div class="f-name">Pantalla de Batalla</div>
+                    <div class="f-desc">Paneles de servidores, barras de vida/energía, 8 herramientas y log en tiempo real.</div>
+                </div>
+                <div class="feature-item">
+                    <span class="f-icon">🏆</span>
+                    <div class="f-name">Ranking Global</div>
+                    <div class="f-desc">Tabla con posición, nombre, nivel, victorias, derrotas y winrate. Muestra query SQL.</div>
+                </div>
+                <div class="feature-item">
+                    <span class="f-icon">👤</span>
+                    <div class="f-name">Perfil del Jugador</div>
+                    <div class="f-desc">Stats personales, barra de XP, nivel y herramientas desbloqueadas.</div>
+                </div>
+                <div class="feature-item">
+                    <span class="f-icon">📋</span>
+                    <div class="f-name">Historial</div>
+                    <div class="f-desc">Registro de partidas con fecha, rival, resultado, turnos y duración.</div>
+                </div>
+                <div class="feature-item">
+                    <span class="f-icon">🎯</span>
+                    <div class="f-name">Torneos</div>
+                    <div class="f-desc">Lista de torneos con estado, participantes, ganador y premio.</div>
+                </div>
+                <div class="feature-item">
+                    <span class="f-icon">🏅</span>
+                    <div class="f-name">Modal de Resultado</div>
+                    <div class="f-desc">Victoria/Derrota con estadísticas de la partida y opciones de revancha.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 16: MANTENIMIENTO ===== -->
+    <div class="slide" data-slide="16">
+        <div class="slide-header">
+            <div class="slide-number">16 / 17</div>
+            <h2 class="slide-title">PLAN DE <span>MANTENIMIENTO</span></h2>
+        </div>
+        <div class="slide-body">
+            <div class="three-cols">
+                <div class="card">
+                    <div class="card-title">🔧 Preventivo</div>
+                    <ul>
+                        <li>Revisar integridad de datos periódicamente</li>
+                        <li>Crear respaldos completos de la base</li>
+                        <li>Optimizar consultas lentas</li>
+                        <li>Monitorear uso de recursos</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title">🛠️ Correctivo</div>
+                    <ul>
+                        <li>Corregir errores reportados</li>
+                        <li>Actualizar módulos defectuosos</li>
+                        <li>Restaurar datos desde backup</li>
+                        <li>Parchear vulnerabilidades</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-title">🚀 Evolutivo</div>
+                    <ul>
+                        <li>Nuevas herramientas de hackeo</li>
+                        <li>Modo multijugador online</li>
+                        <li>Reportes y estadísticas avanzadas</li>
+                        <li>Nuevos modos de torneo</li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+            <div class="card">
+                <div class="card-title">📦 Plan de Migración Heterogénea</div>
+                <div class="diagram">
+                    <div class="diagram-box db-magenta">📊 Excel / MySQL</div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-box db-cyan">🔄 Exportar datos</div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-box db-green">🏗️ Transformar</div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-box db-purple">📥 Importar a SQL Server</div>
+                    <div class="diagram-arrow">→</div>
+                    <div class="diagram-box db-yellow">✅ Validar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SLIDE 17: CONCLUSIONES ===== -->
+    <div class="slide" data-slide="17">
+        <div class="slide-header">
+            <div class="slide-number">17 / 17</div>
+            <h2 class="slide-title"><span>CONCLUSIONES</span></h2>
+        </div>
+        <div class="slide-body">
+            <div class="two-cols">
+                <div>
+                    <p style="font-size: 1.1rem; line-height: 2;">
+                        El desarrollo de <span class="highlight">HACK BATTLE</span> permitió implementar una solución
+                        completa orientada a la <span class="purple">gestión de torneos de hackeo simulado</span>
+                        mediante una arquitectura organizada y una base de datos relacional robusta.
+                        <br><br>
+                        La utilización de <span class="cyan">SQL Server</span> permitió gestionar correctamente la información
+                        con triggers, vistas, procedimientos almacenados y control de seguridad.
+                        <br><br>
+                        <span class="magenta">Java Swing + JDBC</span> facilitó la creación de una interfaz gráfica
+                        conectada en tiempo real con la base de datos.
+                    </p>
+                </div>
+                <div>
+                    <div class="card" style="margin-bottom: 15px;">
+                        <div class="card-title">📊 Resumen del Proyecto</div>
+                        <div class="stat-row" style="display:flex; justify-content:space-between; padding: 8px 0; border-bottom: 1px solid var(--border);"><span style="color:var(--text-dim);">Tablas creadas</span><span style="color:var(--purple-light); font-weight:700;">12</span></div>
+                        <div class="stat-row" style="display:flex; justify-content:space-between; padding: 8px 0; border-bottom: 1px solid var(--border);"><span style="color:var(--text-dim);">Triggers implementados</span><span style="color:var(--magenta); font-weight:700;">10</span></div>
+                        <div class="stat-row" style="display:flex; justify-content:space-between; padding: 8px 0; border-bottom: 1px solid var(--border);"><span style="color:var(--text-dim);">Vistas creadas</span><span style="color:var(--cyan); font-weight:700;">5</span></div>
+                        <div class="stat-row" style="display:flex; justify-content:space-between; padding: 8px 0; border-bottom: 1px solid var(--border);"><span style="color:var(--text-dim);">Procedimientos almacenados</span><span style="color:var(--green); font-weight:700;">5</span></div>
+                        <div class="stat-row" style="display:flex; justify-content:space-between; padding: 8px 0; border-bottom: 1px solid var(--border);"><span style="color:var(--text-dim);">Subconsultas</span><span style="color:var(--yellow); font-weight:700;">5</span></div>
+                        <div class="stat-row" style="display:flex; justify-content:space-between; padding: 8px 0;"><span style="color:var(--text-dim);">Usuarios y roles</span><span style="color:var(--purple-light); font-weight:700;">3</span></div>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <div style="font-family: var(--title); font-size: 1.5rem; letter-spacing: 4px; background: linear-gradient(135deg, var(--purple), var(--magenta)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">¡GRACIAS!</div>
+                        <div style="font-size: 0.85rem; color: var(--text-dim); margin-top: 8px;">¿Preguntas?</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Barra de navegación -->
+<nav class="nav-bar">
+    <div class="page-info">
+        <span class="current" id="currentSlide">01</span> / <span id="totalSlides">17</span>
+    </div>
+    <div style="font-size: 0.75rem; color: var(--text-dim);">← → Flechas para navegar &nbsp;|&nbsp; F para pantalla completa</div>
+    <div class="nav-controls">
+        <button class="nav-btn" onclick="prevSlide()">← Anterior</button>
+        <button class="nav-btn" onclick="nextSlide()">Siguiente →</button>
+    </div>
+</nav>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 17;
+
+    function showSlide(n) {
+        if (n < 1 || n > totalSlides) return;
+        document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+        const slide = document.querySelector(`[data-slide="${n}"]`);
+        if (slide) {
+            slide.classList.add('active');
+            currentSlide = n;
+            document.getElementById('currentSlide').textContent = String(n).padStart(2, '0');
+            document.getElementById('progressBar').style.width = `${(n / totalSlides) * 100}%`;
+        }
+    }
+
+    function nextSlide() { showSlide(currentSlide + 1); }
+    function prevSlide() { showSlide(currentSlide - 1); }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            prevSlide();
+        } else if (e.key === 'f' || e.key === 'F') {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+# HACK BATTLE — Guion de Exposición Completo
+Materia: Tecnología de Base de Datos  
+Docente: Ing. Salas Marianela  
+Integrantes:
+- 👨‍💻 Michael Gonzalo Salvatierra López (Líder y Coordinación)
+- 🧑‍💻 Jhosmar Alejandro Nina Córdoba (Frontend, Interfaz y Mecánicas)
+- 👨‍💻 Lucas Ivan Castro Alvarado (Backend, SQL Server y Base de Datos)
+
+---
+
+### 🟢 DIAPOSITIVA 1: Portada
+🗣️ MICHAEL:
+> "Buenos días Ingeniera y compañeros. Hoy les vamos a presentar nuestro proyecto final de la materia Tecnología de Base de Datos. Se llama HACK BATTLE, y es un juego simulador de batallas cibernéticas por turnos donde los jugadores compiten usando herramientas de hackeo en tiempo real. 
+> Mi nombre es Michael Salvatierra, y junto a mis compañeros Jhosmar Nina y Lucas Castro, les mostraremos cómo construimos este proyecto completo."
+
+---
+
+### 🟢 DIAPOSITIVA 2: Equipo de Desarrollo
+🗣️ MICHAEL:
+> "Para trabajar organizados, nos dividimos los roles principales del proyecto:
+> - Mi persona, Michael, estuve a cargo de la arquitectura, la integración del sistema y la coordinación del equipo.
+> - Mi compañero Jhosmar se encargó de toda la parte visual, el diseño de la interfaz y las animaciones interactivas del juego.
+> - Y mi compañero Lucas estuvo al mando del backend y la base de datos completa en SQL Server, programando los triggers, procedimientos y la seguridad."
+
+---
+
+### 🟢 DIAPOSITIVA 3: Marco Introductorio
+🗣️ MICHAEL:
+> "Hoy en día el hackeo ético y la ciberseguridad son temas súper importantes. Por eso quisimos crear HACK BATTLE: una plataforma divertida y educativa que simula torneos de hackeo en un entorno 100% controlado y seguro.
+> En este sistema se pueden registrar jugadores, armar equipos, competir en torneos y ver rankings globales en tiempo real. Todo impulsado por una base de datos real en SQL Server."
+
+---
+
+### 🟢 DIAPOSITIVA 4: Planteamiento del Problema
+🗣️ MICHAEL:
+> "Vimos que normalmente no existen herramientas simples u organizadas para gestionar competencias de ciberseguridad. Por eso nos hicimos la pregunta: ¿Cómo crear una plataforma que organice torneos de hackeo simulado de forma rápida, segura y automatizada?
+> La respuesta fue desarrollar este sistema con 12 tablas en SQL Server, 10 triggers automáticos, 5 vistas, 5 procedimientos almacenados y una interfaz moderna."
+
+---
+
+### 🟢 DIAPOSITIVA 5: Objetivos
+🗣️ MICHAEL:
+> "Nuestro objetivo general fue desarrollar el sistema completo de HACK BATTLE para administrar jugadores, partidas y torneos de hackeo.
+> Como objetivos específicos, logramos:
+> 1. Diseñar la base de datos relacional normalizada.
+> 2. Implementar la lógica del juego con triggers y procedimientos.
+> 3. Crear una interfaz cyberpunk fluida y fácil de usar.
+> 4. Garantizar la seguridad de usuarios con roles y permisos."
+
+---
+
+### 🟡 DIAPOSITIVA 6: SGBD y Tecnologías
+🗣️ JHOSTAR:
+> "Hola a todos, soy Jhosmar. Les voy a explicar las tecnologías que usamos.
+> Elegimos SQL Server como nuestro motor de base de datos porque nos da una seguridad muy alta, transacciones confiables y manejo de roles.
+> Para el diseño de la interfaz usamos HTML5, CSS3 moderno con efectos cyberpunk (como glitch y partículas) y JavaScript para darle vida a la lógica y las batallas."
+
+---
+
+### 🟡 DIAPOSITIVA 7: Arquitectura del Sistema
+🗣️ JHOSTAR:
+> "Organizamos el proyecto en capas muy claras para que sea fácil de mantener:
+> - La Capa de Vista (UI) es lo que el usuario ve y donde hace clic.
+> - El Controlador maneja las reglas del juego y la inteligencia artificial de los rivales.
+> - Y la Capa de Datos (DAO) se conecta con SQL Server para guardar y consultar toda la información instantáneamente."
+
+---
+
+### 🟡 DIAPOSITIVA 8: Mecánica del Juego
+🗣️ JHOSTAR:
+> "La batalla es muy divertida: es por turnos. Cada jugador empieza con 100 puntos de Seguridad en su servidor y 100 de Energía.
+> En cada turno recibes +15 de Energía y puedes usar hasta 10 herramientas distintas:
+> - Ataques: como Virus, Bomba Lógica, DDoS, Troyano o el nuevo Rootkit que rompe el Firewall rival.
+> - Defensas: como Firewall, Encriptación para curarte o la VPN que te protege de DDoS.
+> - Utilidad: como el Escáner para espiar al rival u Overclock para ganar energía.
+> El primero que deje en 0 la seguridad del rival, ¡gana la partida!"
+
+---
+
+### 🔵 DIAPOSITIVA 9: Base de Datos (HackBattleDB)
+🗣️ LUCAS:
+> "Buenos días Ingeniera, soy Lucas y les explicaré la estructura de nuestra Base de Datos.
+> Diseñamos 12 tablas agrupadas en 3 áreas:
+> 1. Principales: Usuario, Jugador, Herramienta, HerramientaJugador, Equipo y EquipoJugador.
+> 2. Competencia: Torneo, Inscripcion, Partida, MovimientoPartida y Ranking.
+> 3. Auditoría: AuditoriaPartida, que registra cada acción importante automáticamente.
+> Todas las tablas están conectadas con llaves primarias y foráneas para garantizar que no haya datos sueltos o repetidos."
+
+---
+
+### 🔵 DIAPOSITIVA 10: Código SQL — Tablas
+🗣️ LUCAS:
+> "Aquí pueden ver un ejemplo de nuestro código DDL en SQL Server.
+> Usamos tipos de datos adecuados como VARCHAR para textos, INT para contadores y números de nivel, e IDENTITY(1,1) para que los IDs se generen solos secuencialmente. Además aplicamos restricciones como UNIQUE en el correo y llaves foráneas FOREIGN KEY referenciadas correctamente."
+
+---
+
+### 🔵 DIAPOSITIVA 11: Triggers (10 Implementados)
+🗣️ LUCAS:
+> "Para que la base de datos trabaje sola de forma inteligente, programamos 10 Triggers:
+> - Por ejemplo, trg_CrearPerfil crea automáticamente la ficha de Jugador en cuanto se registra un nuevo Usuario.
+> - trg_ActualizarRanking suma las victorias y derrotas al terminar una partida.
+> - trg_ValidarEnergia revisa que el jugador tenga suficiente energía antes de dejarle tirar una herramienta.
+> - Y trg_ActualizarNivel le sube de nivel al jugador cuando junta suficiente experiencia."
+
+---
+
+### 🔵 DIAPOSITIVA 12: Trigger — Ejemplo de Código
+🗣️ LUCAS:
+> "En esta diapo vemos el código real de dos de nuestros triggers:
+> En la izquierda, trg_ActualizarRanking usa las tablas virtuales inserted para detectar quién ganó la partida y sumarle +1 a sus victorias en la tabla de Ranking.
+> En la derecha, trg_ValidarEnergia usa un INSTEAD OF INSERT para cancelar el movimiento si el jugador intenta gastar más energía de la que tiene."
+
+---
+
+### 🔵 DIAPOSITIVA 13: Vistas y Procedimientos Almacenados
+🗣️ LUCAS:
+> "También creamos 5 Vistas y 5 Procedimientos Almacenados (Stored Procedures):
+> - Las vistas nos permiten consultar el Ranking Global o el Historial de Partidas ya unificadas con sus nombres sin repetir consultas complejas.
+> - Los procedimientos como sp_IniciarPartida o sp_RealizarMovimiento ejecutan bloques enteros de código en la base de datos de forma muy rápida y segura."
+
+---
+
+### 🔵 DIAPOSITIVA 14: Subconsultas y Seguridad (Roles)
+🗣️ LUCAS:
+> "Para reportes avanzados aplicamos Subconsultas (con MAX, AVG, COUNT y EXISTS), como buscar qué jugadores tienen un winrate superior al promedio general.
+> En cuanto a Seguridad, creamos 3 roles de acceso en SQL Server:
+> - admin_hb: Control total del sistema.
+> - jugador_hb: Solo puede jugar y ver sus datos.
+> - espectador_hb: Permiso de solo lectura para ver partidas."
+
+---
+
+### 🟡 DIAPOSITIVA 15: Modelado de Interfaces
+🗣️ JHOSTAR:
+> "Regresando a la interfaz, construimos un panel de control con 6 módulos principales:
+> El Login estilo consola de hacker, el Menú principal, la pantalla de Batalla en tiempo real, la tabla de Ranking Global, el Perfil del Jugador con sus logros, el Historial de Batallas y el Panel de Torneos.
+> Además agregamos un selector de dificultad (Novato, Hacker, Elite) y Modo Rápido."
+
+---
+
+### 🟢 DIAPOSITIVA 16: Mantenimiento y Migración
+🗣️ MICHAEL:
+> "Para garantizar que el sistema funcione a largo plazo, definimos un Plan de Mantenimiento:
+> - Preventivo: Hacer copias de seguridad (backups) y revisar que el servidor esté rápido.
+> - Correctivo: Arreglar reportes de errores de inmediato.
+> - Evolutivo: En el futuro agregar multijugador online en tiempo real.
+> También tenemos un plan de migración paso a paso para importar datos si quisiéramos traerlos desde Excel u otro sistema."
+
+---
+
+### 🟢 DIAPOSITIVA 17: Conclusiones
+🗣️ MICHAEL:
+> "En conclusión, HACK BATTLE demostró ser un proyecto completo y funcional que integra todo lo aprendido en la materia.
+> Logramos unir una base de datos sólida de 12 tablas con 10 triggers, 5 vistas y 5 stored procedures, conectada con una interfaz gráfica atractiva e interactiva.
+> ¡Muchas gracias Ingeniera y compañeros por su atención! Estamos listos para responder cualquier pregunta o hacerles una demostración en vivo del juego."
